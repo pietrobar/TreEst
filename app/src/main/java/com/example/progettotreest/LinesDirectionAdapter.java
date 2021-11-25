@@ -23,12 +23,12 @@ public class LinesDirectionAdapter extends RecyclerView.Adapter<LinesDirectionVi
 
     @Override
     public int getItemCount() {
-        return Model.getInstance().getSize();
+        return LinesModel.getInstance().getSize();
     }
 
     @Override
     public void onBindViewHolder(LinesDirectionViewHolder holder, int position) {
-        String text = Model.getInstance().get(position);
+        String text = LinesModel.getInstance().get(position);
         holder.updateContent(text);
     }
 }

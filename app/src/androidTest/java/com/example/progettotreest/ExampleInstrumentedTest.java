@@ -23,4 +23,12 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.progettotreest", appContext.getPackageName());
     }
+
+    @Test
+    public void getProfile_isCorrect(){
+        //non è un vero test, controllare il risultato del log
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Communication.getLines(appContext, "Cez4i87enqRWx32e");
+
+    }
 }

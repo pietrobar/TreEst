@@ -1,11 +1,18 @@
 package com.example.progettotreest;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
@@ -17,6 +24,28 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
 
         loadProfileInfo();
+
+
+        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                uri -> {
+                    // Handle the returned Uri
+                    if (uri!=null)
+                        Log.d(LogTags.PROVA,"URI: "+uri.toString());
+                    //todo: converti uri in base 64
+                    else
+                        Log.d(LogTags.PROVA,"Non ha selezionato una immagine");
+
+                });
+
+        findViewById(R.id.profilePictureView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Pass in the mime type you'd like to allow the user to select
+                // as the input
+                mGetContent.launch("image/*");
+
+            }
+        });
 
     }
 

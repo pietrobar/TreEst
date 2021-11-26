@@ -32,8 +32,20 @@ public class Communication {
         queue.add(request);
         return false;
     }
+    public static void getProfile(Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+        sendPostRequest(GET_PROFILE, context,sid,responseListener,errorListener);
+        // response -> {"uid":"181","name":"unnamed","picture":null,"pversion":"0"}
+    }
 
-    public static void getProfile(Context context, String sid){
+
+
+    public static void getLines(Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+        sendPostRequest(GET_LINES, context,sid,responseListener,errorListener);
+        //response -> {"lines":[{"terminus1":{"sname":"Milano Celoria","did":1},"terminus2":{"sname":"Milano Rogoredo","did":2}},{"terminus1":{"sname":"Milano Lambrate","did":3},"terminus2":{"sname":"Sesto San Giovanni","did":4}}]}
+
+    }
+
+    private static void sendPostRequest(String urlEnd, Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         RequestQueue queue = Volley.newRequestQueue(context);
         final JSONObject jsonBody = new JSONObject();
         try {
@@ -42,28 +54,10 @@ public class Communication {
             e.printStackTrace();
         }
         JsonObjectRequest request = new JsonObjectRequest(
-                URL + GET_PROFILE,
+                URL + urlEnd,
                 jsonBody,
-                response -> Log.d(VOLLEY, "Correct: " + response.toString()),// response -> {"uid":"181","name":"unnamed","picture":null,"pversion":"0"}
-                error -> Log.d(VOLLEY, "Error: " + error.toString())
-        );
-        Log.d(VOLLEY, "Sending request");
-        queue.add(request);
-    }
-
-    public static void getLines(Context context, String sid){
-        RequestQueue queue = Volley.newRequestQueue(context);
-        final JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("sid", "Cez4i87enqRWx32e");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest request = new JsonObjectRequest(
-                URL + GET_LINES,
-                jsonBody,
-                response -> Log.d(VOLLEY, "Correct: " + response.toString()),//response -> {"lines":[{"terminus1":{"sname":"Milano Celoria","did":1},"terminus2":{"sname":"Milano Rogoredo","did":2}},{"terminus1":{"sname":"Milano Lambrate","did":3},"terminus2":{"sname":"Sesto San Giovanni","did":4}}]}
-                error -> Log.d(VOLLEY, "Error: " + error.toString())
+                responseListener,
+                errorListener
         );
         Log.d(VOLLEY, "Sending request");
         queue.add(request);

@@ -1,14 +1,19 @@
 package com.example.progettotreest;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -28,7 +33,17 @@ public class ExampleInstrumentedTest {
     public void getProfile_isCorrect(){
         //non è un vero test, controllare il risultato del log
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Communication.getLines(appContext, "Cez4i87enqRWx32e");
+        Communication.getLines(appContext, "Cez4i87enqRWx32e", new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("VOLLEY", "AAAAA " + response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("VOLLEY", "ERRORE " + error.toString());
+            }
+        });
 
     }
 }

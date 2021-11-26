@@ -2,18 +2,18 @@ package com.example.progettotreest;
 
 import java.util.ArrayList;
 
-public class LinesModel {
-    private static LinesModel theInstance = null;
+public class Model {
+    private static Model theInstance = null;
     private ArrayList<String> contacts = null;
 
-    public static synchronized LinesModel getInstance() {
+    public static synchronized Model getInstance() {
         if (theInstance == null) {
-            theInstance = new LinesModel();
+            theInstance = new Model();
         }
         return theInstance;
     }
 
-    private LinesModel() {
+    private Model() {
         contacts = new ArrayList<String>();
     }
 

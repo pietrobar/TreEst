@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LinesModel.getInstance().initWithFakeData();
+        Model.getInstance().initWithFakeData();
         RecyclerView recyclerView = findViewById(R.id.recyclerView_linesDirections);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         LinesDirectionAdapter adapter = new LinesDirectionAdapter(this);

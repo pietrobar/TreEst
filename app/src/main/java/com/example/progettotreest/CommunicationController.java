@@ -16,7 +16,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Communication {
+public class CommunicationController {
     private static final String URL = "https://ewserver.di.unimi.it/mobicomp/treest/";
     private static final String GET_PROFILE = "getProfile.php";
     private static final String GET_LINES = "getLines.php";
@@ -41,8 +41,6 @@ public class Communication {
 
     public static void getLines(Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         sendPostRequest(GET_LINES, context,sid,responseListener,errorListener);
-        //response -> {"lines":[{"terminus1":{"sname":"Milano Celoria","did":1},"terminus2":{"sname":"Milano Rogoredo","did":2}},{"terminus1":{"sname":"Milano Lambrate","did":3},"terminus2":{"sname":"Sesto San Giovanni","did":4}}]}
-
     }
 
     private static void sendPostRequest(String urlEnd, Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){

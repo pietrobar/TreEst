@@ -33,7 +33,7 @@ public class ExampleInstrumentedTest {
     public void getProfile_isCorrect(){
         //non è un vero test, controllare il risultato del log
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Communication.getLines(appContext, "Cez4i87enqRWx32e", new Response.Listener<JSONObject>() {
+        CommunicationController.getLines(appContext, "Cez4i87enqRWx32e", new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("VOLLEY", "AAAAA " + response.toString());

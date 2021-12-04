@@ -10,10 +10,24 @@
 
 
     <TextView
-        android:id="@+id/lineDirectionItem_textView"
+        android:id="@+id/line_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/direction1_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Direction1" />
+
+    <Button
+        android:id="@+id/direction2_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Direction2" />
 
     <View
         android:id="@+id/divider2"

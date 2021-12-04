@@ -28,7 +28,7 @@ public class LinesDirectionAdapter extends RecyclerView.Adapter<LinesDirectionVi
 
     @Override
     public void onBindViewHolder(LinesDirectionViewHolder holder, int position) {
-        String text = Model.getInstance().get(position);
-        holder.updateContent(text);
+        Line line = Model.getInstance().get(position);
+        holder.updateContent(line);
     }
 }

@@ -7,7 +7,7 @@
     tools:context=".BoardActivity">
 
     <TextView
-        android:id="@+id/treEstTitleTextView_2"
+        android:id="@+id/treEstTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -26,10 +26,10 @@
         android:layout_marginTop="88dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView_2" />
+        app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView" />
 
     <ImageButton
-        android:id="@+id/imageButton_2"
+        android:id="@+id/imageButton"
         android:layout_width="48dp"
         android:layout_height="61dp"
         android:layout_marginTop="20dp"
@@ -79,6 +79,6 @@
         app:layout_constraintBottom_toTopOf="@+id/recyclerView_posts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView_2" />
+        app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

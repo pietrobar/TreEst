@@ -1,6 +1,8 @@
 package com.example.progettotreest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +20,13 @@ public class BoardActivity extends AppCompatActivity {
         TextView selectedDirectionTV = findViewById(R.id.selectedDirection_tv);
         selectedDirectionTV.setText("Linea: " + selectedLine.getTerminus1().getSname() +" - "+  selectedLine.getTerminus2().getSname() + " direzione " + selectedTerminus.getSname());
 
-        //todo: inizializzare recyclerview
+        RecyclerView recyclerView = findViewById(R.id.recyclerView_posts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        PostsAdapter adapter = new PostsAdapter(this);
+        recyclerView.setAdapter(adapter);
+
+        Model.getInstance().retrievePosts(this, selectedTerminus.getDid(), adapter);
+
 
 
     }

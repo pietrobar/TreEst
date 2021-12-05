@@ -25,12 +25,12 @@ public class LinesAdapter extends RecyclerView.Adapter<LinesViewHolder> {
 
     @Override
     public int getItemCount() {
-        return Model.getInstance().getSize();
+        return Model.getInstance().getLinesSize();
     }
 
     @Override
     public void onBindViewHolder(LinesViewHolder holder, int position) {
-        Line line = Model.getInstance().get(position);
+        Line line = Model.getInstance().getLine(position);
         holder.updateContent(line);
     }
 }

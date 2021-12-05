@@ -20,6 +20,7 @@ public class CommunicationController {
     private static final String URL = "https://ewserver.di.unimi.it/mobicomp/treest/";
     private static final String GET_PROFILE = "getProfile.php";
     private static final String GET_LINES = "getLines.php";
+    private static final String GET_POSTS = "getPosts.php";
 
     private String jsonSID = "{\"sid\":\"Cez4i87enqRWx32e\"}";
 
@@ -37,6 +38,11 @@ public class CommunicationController {
         // response -> {"uid":"181","name":"unnamed","picture":null,"pversion":"0"}
     }
 
+    public static void getPosts(Context context, String sid, int did, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+        sendPostRequestTOREFACTOR(GET_POSTS, context,sid, did,responseListener,errorListener);
+
+    }
+
 
 
     public static void getLines(Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
@@ -48,6 +54,25 @@ public class CommunicationController {
         final JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("sid", sid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest request = new JsonObjectRequest(
+                URL + urlEnd,
+                jsonBody,
+                responseListener,
+                errorListener
+        );
+        Log.d(VOLLEY, "Sending request");
+        queue.add(request);
+    }
+    private static void sendPostRequestTOREFACTOR(String urlEnd, Context context, String sid, int did, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+        //todo: refactor del metodo -> passare un oggetto jsonbody come parametro
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("sid", sid);
+            jsonBody.put("did", did);
         } catch (JSONException e) {
             e.printStackTrace();
         }

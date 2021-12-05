@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProgettoTreEst">
         <activity
+            android:name=".BoardActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileSettingsActivity"
             android:exported="false" />
         <activity

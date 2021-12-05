@@ -15,13 +15,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView_linesDirections);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView_posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        LinesDirectionAdapter adapter = new LinesDirectionAdapter(this);
+        LinesAdapter adapter = new LinesAdapter(this);
         recyclerView.setAdapter(adapter);
         Model.getInstance().getLines(this,adapter);
 
-        findViewById(R.id.imageButton).setOnClickListener(v -> {
+        findViewById(R.id.imageButton_2).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProfileSettingsActivity.class);
             startActivity(intent);
         });

@@ -8,17 +8,19 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class LinesDirectionAdapter extends RecyclerView.Adapter<LinesDirectionViewHolder> {
+public class LinesAdapter extends RecyclerView.Adapter<LinesViewHolder> {
     private LayoutInflater mInflater;
+    private Context context;
 
-    public LinesDirectionAdapter(Context context) {
+    public LinesAdapter(Context context) {
         this.mInflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
-    public LinesDirectionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LinesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.line_direction_row, parent, false);
-        return new LinesDirectionViewHolder(view);
+        return new LinesViewHolder(view,context);
     }
 
     @Override
@@ -27,7 +29,7 @@ public class LinesDirectionAdapter extends RecyclerView.Adapter<LinesDirectionVi
     }
 
     @Override
-    public void onBindViewHolder(LinesDirectionViewHolder holder, int position) {
+    public void onBindViewHolder(LinesViewHolder holder, int position) {
         Line line = Model.getInstance().get(position);
         holder.updateContent(line);
     }

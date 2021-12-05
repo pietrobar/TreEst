@@ -1,6 +1,8 @@
 package com.example.progettotreest;
 
-public class Line {
+import java.io.Serializable;
+
+public class Line implements Serializable {
     private final Terminus terminus1;
     private final Terminus terminus2;
 

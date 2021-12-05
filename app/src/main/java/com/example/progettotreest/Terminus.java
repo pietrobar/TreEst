@@ -1,6 +1,8 @@
 package com.example.progettotreest;
 
-public class Terminus {
+import java.io.Serializable;
+
+public class Terminus  implements Serializable {
     private final String sname;
     private final int did;
 

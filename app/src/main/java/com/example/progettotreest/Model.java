@@ -35,7 +35,7 @@ public class Model {
         return lines.size();
     }
 
-    public void getLines(Context context, LinesDirectionAdapter adapter){
+    public void getLines(Context context, LinesAdapter adapter){
         CommunicationController.getLines(context, this.sid,
                 response -> {
                     Log.d(LogTags.VOLLEY, "Just received lines " + response.toString());

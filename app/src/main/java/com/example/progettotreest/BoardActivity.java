@@ -15,10 +15,9 @@ public class BoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
 
-        Line selectedLine = (Line) getIntent().getSerializableExtra("selectedLine");
         Terminus selectedTerminus = (Terminus) getIntent().getSerializableExtra("selectedTerminus");
         TextView selectedDirectionTV = findViewById(R.id.selectedDirection_tv);
-        selectedDirectionTV.setText("Linea: " + selectedLine.getTerminus1().getSname() +" - "+  selectedLine.getTerminus2().getSname() + " direzione " + selectedTerminus.getSname());
+        selectedDirectionTV.setText(selectedTerminus.getSname());
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView_posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

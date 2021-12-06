@@ -18,6 +18,9 @@ public class Model {
     private ArrayList<Post> posts = null;
     private String sid = null;
 
+
+    private LinesAdapter adapter;
+
     public static synchronized Model getInstance() {
         if (theInstance == null) {
             theInstance = new Model();
@@ -28,7 +31,11 @@ public class Model {
     private Model() {
         lines = new ArrayList<>();
         posts = new ArrayList<>();
-        sid = "Cez4i87enqRWx32e";
+
+    }
+
+    public void setLinesAdapter(LinesAdapter adapter) {
+        this.adapter = adapter;
     }
 
 
@@ -54,10 +61,10 @@ public class Model {
 
 
 
-    public void retrieveLines(Context context, LinesAdapter adapter){
+    public void retrieveLines(Context context){
         CommunicationController.getLines(context, this.sid,
                 response -> {
-                    Log.d(LogTags.VOLLEY, "Just received lines " + response.toString());
+                    Log.d(MyStrings.VOLLEY, "Just received lines " + response.toString());
                     try {
 
                         JSONArray linesJson = response.getJSONArray("lines");
@@ -74,10 +81,9 @@ public class Model {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                    adapter.notifyDataSetChanged();
+                    this.adapter.notifyDataSetChanged();
                 },
-                error -> Log.d(LogTags.VOLLEY, "ERRORE " + error.toString()));
+                error -> Log.d(MyStrings.VOLLEY, "ERRORE " + error.toString()));
 
     }
 
@@ -85,21 +91,22 @@ public class Model {
         posts.clear();
         CommunicationController.getPosts(context, this.sid, did,
                 response->{
-                    Log.d(LogTags.PROVA,"Just Received posts: " + response.toString());
+                    Log.d(MyStrings.PROVA,"Just Received posts: " + response.toString());
                     JSONArray postsJson = null;
                     try {
                         postsJson = response.getJSONArray("posts");
                         for(int i = 0; i < postsJson.length(); i++) {
                             JSONObject post = postsJson.getJSONObject(i);
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
                             posts.add(new Post(
-                                    post.getInt("delay"),
-                                    post.getInt("status"),
-                                    post.getString("comment"),
+                                    post.has("delay")?post.getInt("delay"):-1,
+                                    post.has("status")?post.getInt("status"):-1,
+                                    post.has("comment")?post.getString("comment"):"No Comment",
                                     post.getBoolean("followingAuthor"),
-                                    LocalDateTime.parse(post.getString("datetime"), formatter),
+                                    //TODO:LocalDateTime.parse(post.getString("datetime"), formatter),
+                                    LocalDateTime.now(),
                                     post.getString("authorName"),
                                     post.getInt("pversion"),
                                     post.getInt("author")));
@@ -111,11 +118,11 @@ public class Model {
                     adapter.notifyDataSetChanged();
 
                 },
-                error->{Log.d(LogTags.VOLLEY,"Errore "+error);});
+                error->{Log.d(MyStrings.VOLLEY,"Errore "+error);});
     }
 
 
-
-
-
+    public void setSid(String sid) {
+        this.sid=sid;
+    }
 }

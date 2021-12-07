@@ -24,6 +24,7 @@ public class CommunicationController {
     private static final String REGISTER = "register.php";
     private static final String FOLLOW = "follow.php";
     private static final String UNFOLLOW = "unfollow.php";
+    private static final String ADD_POST = "addPost.php";
 
 
     public static void register(Context context, LinesAdapter adapter){
@@ -98,6 +99,21 @@ public class CommunicationController {
             e.printStackTrace();
         }
         sendPostRequest(UNFOLLOW, context,jsonBody,responseListener,errorListener);
+    }
+
+    public static void addPost(Context context, String sid, int did, int delay, int status, String comment, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+        final JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("sid", sid);
+            jsonBody.put("did", did);
+            jsonBody.put("delay", delay);
+            jsonBody.put("status", status);
+            jsonBody.put("comment", comment);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sendPostRequest(ADD_POST, context,jsonBody,responseListener,errorListener);
+
     }
 
 

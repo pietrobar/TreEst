@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 public class BoardActivity extends AppCompatActivity {
@@ -26,7 +28,11 @@ public class BoardActivity extends AppCompatActivity {
 
         Model.getInstance().retrievePosts(this, selectedTerminus.getDid(), adapter);
 
-
+        findViewById(R.id.new_post_btn).setOnClickListener(v -> {
+            Intent intent = new Intent(this, NewPostActivity.class);
+            intent.putExtra("did", selectedTerminus.getDid());
+            startActivity(intent);
+        });
 
     }
 }

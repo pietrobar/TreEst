@@ -42,28 +42,26 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/chooseLine_btn"
-        android:layout_width="wrap_content"
+        android:id="@+id/details_btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginBottom="65dp"
-        android:text="Cambia linea"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView_posts" />
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="1dp"
+        android:text="Dettagli"
+        app:layout_constraintBottom_toTopOf="@+id/new_post_btn"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_posts"
+        tools:layout_editor_absoluteX="152dp" />
 
     <Button
-        android:id="@+id/newPost_btn"
-        android:layout_width="wrap_content"
+        android:id="@+id/new_post_btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="65dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="16dp"
         android:text="Nuovo post"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView_posts" />
+        app:layout_constraintTop_toBottomOf="@+id/details_btn"
+        tools:layout_editor_absoluteX="144dp" />
 
     <TextView
         android:id="@+id/selectedDirection_tv"

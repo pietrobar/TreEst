@@ -32,6 +32,9 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         delayTV.setText(String.valueOf(post.getDelay()));
         statusTV.setText(String.valueOf(post.getStatus()));
         commentTV.setText(post.getComment());
+
+        //todo: controllare che non sia io l'autore del post e in caso togliere il bottone
+
         if (post.isFollowingAuthor()){
             followUnfollowBtn.setText("-");
         }else {

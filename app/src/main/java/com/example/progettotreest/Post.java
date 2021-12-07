@@ -56,4 +56,8 @@ public class Post {
     public int getAuthor() {
         return author;
     }
+
+    public void setFollowingAuthor(boolean b) {
+        this.followingAuthor=b;
+    }
 }

@@ -22,6 +22,9 @@ public class CommunicationController {
     private static final String GET_LINES = "getLines.php";
     private static final String GET_POSTS = "getPosts.php";
     private static final String REGISTER = "register.php";
+    private static final String FOLLOW = "follow.php";
+    private static final String UNFOLLOW = "unfollow.php";
+
 
     public static void register(Context context, LinesAdapter adapter){
         sendPostRequest(REGISTER,context,new JSONObject(), response -> {
@@ -73,6 +76,28 @@ public class CommunicationController {
             e.printStackTrace();
         }
         sendPostRequest(GET_LINES, context,jsonBody,responseListener,errorListener);
+    }
+
+    public static void follow(Context context, String sid, int uid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+        final JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("sid", sid);
+            jsonBody.put("uid", uid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sendPostRequest(FOLLOW, context,jsonBody,responseListener,errorListener);
+    }
+
+    public static void unfollow(Context context, String sid, int uid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
+        final JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("sid", sid);
+            jsonBody.put("uid", uid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sendPostRequest(UNFOLLOW, context,jsonBody,responseListener,errorListener);
     }
 
 

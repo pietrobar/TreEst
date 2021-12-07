@@ -23,7 +23,7 @@ public class CommunicationController {
     private static final String GET_POSTS = "getPosts.php";
     private static final String REGISTER = "register.php";
 
-    public static void register(Context context){
+    public static void register(Context context, LinesAdapter adapter){
         sendPostRequest(REGISTER,context,new JSONObject(), response -> {
             try {
                 Log.d(VOLLEY, "Received: " + response.toString());
@@ -34,7 +34,7 @@ public class CommunicationController {
                 editor.commit();
                 //set sid to model and retrieve the lines
                 Model.getInstance().setSid(response.getString("sid"));
-                Model.getInstance().retrieveLines(context);
+                Model.getInstance().retrieveLines(context, adapter);
             } catch (JSONException e) {
                 e.printStackTrace();
             }},error -> Log.d(VOLLEY, error.toString()));

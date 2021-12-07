@@ -19,7 +19,6 @@ public class Model {
     private String sid = null;
 
 
-    private LinesAdapter adapter;
 
     public static synchronized Model getInstance() {
         if (theInstance == null) {
@@ -34,9 +33,7 @@ public class Model {
 
     }
 
-    public void setLinesAdapter(LinesAdapter adapter) {
-        this.adapter = adapter;
-    }
+
 
 
     public Post getPost(int index) {
@@ -61,7 +58,7 @@ public class Model {
 
 
 
-    public void retrieveLines(Context context){
+    public void retrieveLines(Context context, LinesAdapter adapter){
         CommunicationController.getLines(context, this.sid,
                 response -> {
                     Log.d(MyStrings.VOLLEY, "Just received lines " + response.toString());
@@ -81,7 +78,7 @@ public class Model {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    this.adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 },
                 error -> Log.d(MyStrings.VOLLEY, "ERRORE " + error.toString()));
 
@@ -124,5 +121,9 @@ public class Model {
 
     public void setSid(String sid) {
         this.sid=sid;
+    }
+
+    public String getSid() {
+        return sid;
     }
 }

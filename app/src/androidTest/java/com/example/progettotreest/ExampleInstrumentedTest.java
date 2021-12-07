@@ -29,21 +29,5 @@ public class ExampleInstrumentedTest {
         assertEquals("com.example.progettotreest", appContext.getPackageName());
     }
 
-    @Test
-    public void getProfile_isCorrect(){
-        //non è un vero test, controllare il risultato del log
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        CommunicationController.getLines(appContext, "Cez4i87enqRWx32e", new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("VOLLEY", "AAAAA " + response.toString());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("VOLLEY", "ERRORE " + error.toString());
-            }
-        });
 
-    }
 }

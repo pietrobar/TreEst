@@ -17,7 +17,7 @@ public class Model {
     private ArrayList<Line> lines = null;
     private ArrayList<Post> posts = null;
     private String sid = null;
-
+    private Database db;
 
 
     public static synchronized Model getInstance() {
@@ -125,5 +125,13 @@ public class Model {
 
     public String getSid() {
         return sid;
+    }
+
+    public void setDB(Database db) {
+        this.db = db;
+    }
+
+    public Database getDB() {
+        return this.db;
     }
 }

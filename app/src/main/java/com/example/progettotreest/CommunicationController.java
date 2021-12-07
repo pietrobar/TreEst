@@ -25,6 +25,9 @@ public class CommunicationController {
     private static final String FOLLOW = "follow.php";
     private static final String UNFOLLOW = "unfollow.php";
     private static final String ADD_POST = "addPost.php";
+    private static final String GET_USER_PICTURE = "getUserPicture.php";
+    private static final String GET_STATIONS = "getStations.php";
+    private static final String SET_PROFILE = "setProfile.php";
 
 
     public static void register(Context context, LinesAdapter adapter){

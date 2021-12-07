@@ -3,22 +3,26 @@ package com.example.progettotreest;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
 
 public class MainActivity extends AppCompatActivity {
     LinesAdapter adapter;
+    Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = Room.databaseBuilder(getApplicationContext(), Database.class, "db").build();
+        Model.getInstance().setDB(db);
 
         SharedPreferences sharedPref = getSharedPreferences(MyStrings.PREFS, 0);
         String sid = sharedPref.getString("sid", "");
@@ -59,4 +63,18 @@ public class MainActivity extends AppCompatActivity {
             Model.getInstance().retrieveLines(this,adapter);
         }
     }
+
+    /*public void saveToDB() {
+        new Thread(()->{
+            db.dao().insertAll(students);
+        }).start();
+
+    }
+
+    public void initializeFromDB(){
+        new Thread(()->{
+            students.addAll(db.dao().getAll());
+        }).start();
+
+    }*/
 }

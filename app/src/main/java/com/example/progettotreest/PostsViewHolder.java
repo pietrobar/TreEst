@@ -5,7 +5,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class PostsViewHolder extends RecyclerView.ViewHolder{
     private TextView postAuthorTV;
@@ -13,7 +16,8 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     private TextView statusTV;
     private TextView commentTV;
     private Button followUnfollowBtn;
-
+    Database db;
+    private View view;
 
     public PostsViewHolder(View itemView) {
         super(itemView);
@@ -22,6 +26,8 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         statusTV = itemView.findViewById(R.id.status_tv);
         commentTV = itemView.findViewById(R.id.comment_tv);
         followUnfollowBtn = itemView.findViewById(R.id.follow_unfolllow_btn);
+        db = Model.getInstance().getDB();
+        this.view=itemView;
 
 
     }
@@ -32,6 +38,15 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         delayTV.setText(String.valueOf(post.getDelay()));
         statusTV.setText(String.valueOf(post.getStatus()));
         commentTV.setText(post.getComment());
+
+        //todo: per ogni post prendere l'autore e verificare se ho l'immagine più recente
+        new Thread(() -> {
+            List<User> users = db.getDao().getAll();
+            view.post(()->{
+                Log.d(MyStrings.PROVA, "AAAA "+ users);
+            });
+        }).start();
+
 
         //todo: controllare che non sia io l'autore del post e in caso togliere il bottone
 

@@ -1,6 +1,5 @@
 package com.example.progettotreest;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Post {
@@ -8,13 +7,13 @@ public class Post {
     private int status;
     private String comment;
     private boolean followingAuthor;
-    private LocalDateTime datetime;
+    private String datetime;
     private String authorName;
     private int pversion;
     private int author;
 
 
-    public Post(int delay, int status, String comment, boolean followingAuthor, LocalDateTime datetime, String authorName, int pversion, int author) {
+    public Post(int delay, int status, String comment, boolean followingAuthor, String datetime, String authorName, int pversion, int author) {
         this.delay = delay;
         this.status = status;
         this.comment = comment;
@@ -41,7 +40,7 @@ public class Post {
         return followingAuthor;
     }
 
-    public LocalDateTime getDatetime() {
+    public String getDatetime() {
         return datetime;
     }
 

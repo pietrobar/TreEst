@@ -39,6 +39,7 @@ public class Model {
     public Post getPost(int index) {
         return posts.get(index);
     }
+
     public int getPostsSize(){ return posts.size();}
 
     public Line getLine(int index) {
@@ -94,16 +95,15 @@ public class Model {
                         postsJson = response.getJSONArray("posts");
                         for(int i = 0; i < postsJson.length(); i++) {
                             JSONObject post = postsJson.getJSONObject(i);
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
+                            String datetime =  post.getString("datetime");
+                            String subDate = datetime.substring(0,datetime.indexOf("."));
                             posts.add(new Post(
                                     post.has("delay")?post.getInt("delay"):-1,
                                     post.has("status")?post.getInt("status"):-1,
                                     post.has("comment")?post.getString("comment"):"No Comment",
                                     post.getBoolean("followingAuthor"),
-                                    //TODO:LocalDateTime.parse(post.getString("datetime"), formatter),
-                                    LocalDateTime.now(),
+                                    subDate,
                                     post.getString("authorName"),
                                     post.getInt("pversion"),
                                     post.getInt("author")));

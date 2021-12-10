@@ -16,6 +16,9 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     private TextView statusTV;
     private TextView commentTV;
     private Button followUnfollowBtn;
+    private TextView datetimeTV;
+
+
     Database db;
     private View view;
 
@@ -25,6 +28,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         delayTV = itemView.findViewById(R.id.delay_tv);
         statusTV = itemView.findViewById(R.id.status_tv);
         commentTV = itemView.findViewById(R.id.comment_tv);
+        datetimeTV = itemView.findViewById(R.id.datetime_textView);
         followUnfollowBtn = itemView.findViewById(R.id.follow_unfolllow_btn);
         db = Model.getInstance().getDB();
         this.view=itemView;
@@ -38,6 +42,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         delayTV.setText(String.valueOf(post.getDelay()));
         statusTV.setText(String.valueOf(post.getStatus()));
         commentTV.setText(post.getComment());
+        datetimeTV.setText(post.getDatetime());
 
         //todo: per ogni post prendere l'autore e verificare se ho l'immagine più recente
         new Thread(() -> {

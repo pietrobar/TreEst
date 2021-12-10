@@ -41,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
         }else {//second time
             //Already registered
             Model.getInstance().setSid(sid);
-            //retrieve info from shared preferences => saved did, then launch BoardActivity
+            //retrieve info from shared preferences => line and did, then launch BoardActivity
             Gson gson = new Gson();
-            String json = sharedPref.getString("terminus", "");
-            Terminus preferredTerminus = gson.fromJson(json, Terminus.class);
-
+            String json = sharedPref.getString("line", "");
+            Line line = gson.fromJson(json, Line.class);
+            int did = sharedPref.getInt("did", -1);
             Intent intent = new Intent(this, BoardActivity.class);
-            intent.putExtra("selectedTerminus", preferredTerminus);
+            intent.putExtra("line", line);
+            intent.putExtra("did", did);
             startActivity(intent);
         }
 

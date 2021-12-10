@@ -20,4 +20,11 @@ public class Line implements Serializable {
     }
 
 
+    public String getNameBasedOnDid(int did) {
+        if (this.getTerminus1().getDid()==did){
+            return getTerminus2().getSname() + " - " + getTerminus1().getSname();
+        }else {
+            return getTerminus1().getSname() + " - " + getTerminus2().getSname();
+        }
+    }
 }

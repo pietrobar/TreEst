@@ -27,25 +27,29 @@ public class LinesViewHolder extends RecyclerView.ViewHolder {
 
         direction1Btn.setOnClickListener(v -> {
             Intent intent = new Intent(context, BoardActivity.class);
-            intent.putExtra("selectedTerminus", currentLine.getTerminus1());
+            intent.putExtra("line", currentLine);
+            intent.putExtra("did", currentLine.getTerminus1().getDid());
             //before starting the new activity I want to save the preferred terminus
-            savePreference(context, currentLine.getTerminus1());
+            savePreference(context, currentLine, currentLine.getTerminus1().getDid());
             context.startActivity(intent);
         });
         direction2Btn.setOnClickListener(v -> {
             Intent intent = new Intent(context, BoardActivity.class);
-            intent.putExtra("selectedTerminus", currentLine.getTerminus2());
-            savePreference(context, currentLine.getTerminus2());
+            intent.putExtra("line", currentLine);
+            intent.putExtra("did", currentLine.getTerminus2().getDid());
+            savePreference(context, currentLine, currentLine.getTerminus2().getDid());
             context.startActivity(intent);
         });
     }
 
-    private void savePreference(Context context, Terminus preferredTerminus) {
+    private void savePreference(Context context, Line line, int did) {
+        //save into shared preferences the line and the did of the last selected direction
         Gson gson = new Gson();
-        String terminus = gson.toJson(preferredTerminus);
+        String l = gson.toJson(line);
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyStrings.PREFS, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("terminus", terminus);
+        editor.putString("line", l);
+        editor.putInt("did",did);
         editor.commit();
     }
 

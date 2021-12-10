@@ -58,7 +58,7 @@ public class Model {
 
 
 
-
+    //todo: considerare come opzione quella di fare un setContext e settare l'application context dalla main activity
     public void retrieveLines(Context context, LinesAdapter adapter){
         CommunicationController.getLines(context, this.sid,
                 response -> {

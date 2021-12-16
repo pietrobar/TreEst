@@ -87,7 +87,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
 
 
         //todo: controllare che non sia io l'autore del post e in caso togliere il bottone
-
+        //todo: quando seguo un utente devo cambiare tutti i bottoni dei suoi post
         if (post.isFollowingAuthor()){
             followUnfollowBtn.setText("-");
         }else {

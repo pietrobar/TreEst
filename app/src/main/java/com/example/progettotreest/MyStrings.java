@@ -6,7 +6,5 @@ public class MyStrings {
     public static final String PREFS = "a";
 
 
-
-
-
+    public static final String DB = "database";
 }

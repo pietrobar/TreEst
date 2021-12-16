@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Model {
     private static Model theInstance = null;
@@ -18,6 +19,7 @@ public class Model {
     private ArrayList<Post> posts = null;
     private String sid = null;
     private Database db;
+    private List<User> users;
 
 
     public static synchronized Model getInstance() {
@@ -89,7 +91,7 @@ public class Model {
         posts.clear();
         CommunicationController.getPosts(context, this.sid, did,
                 response->{
-                    Log.d(MyStrings.PROVA,"Just Received posts: " + response.toString());
+                    Log.d(MyStrings.VOLLEY,"Just Received posts: " + response.toString());
                     JSONArray postsJson = null;
                     try {
                         postsJson = response.getJSONArray("posts");
@@ -133,5 +135,13 @@ public class Model {
 
     public Database getDB() {
         return this.db;
+    }
+
+    public List<User> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

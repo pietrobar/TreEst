@@ -1,14 +1,20 @@
 package com.example.progettotreest;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PostsViewHolder extends RecyclerView.ViewHolder{
     private TextView postAuthorTV;
@@ -17,6 +23,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     private TextView commentTV;
     private Button followUnfollowBtn;
     private TextView datetimeTV;
+    private ImageView profilePic;
 
 
     Database db;
@@ -30,6 +37,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         commentTV = itemView.findViewById(R.id.comment_tv);
         datetimeTV = itemView.findViewById(R.id.datetime_textView);
         followUnfollowBtn = itemView.findViewById(R.id.follow_unfolllow_btn);
+        profilePic = itemView.findViewById(R.id.post_profilePic);
         db = Model.getInstance().getDB();
         this.view=itemView;
 
@@ -44,11 +52,36 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         commentTV.setText(post.getComment());
         datetimeTV.setText(post.getDatetime());
 
-        //todo: per ogni post prendere l'autore e verificare se ho l'immagine più recente
         new Thread(() -> {
-            List<User> users = db.getDao().getAll();
+            //to don't always retrieve users from db
+            List<User> users = Model.getInstance().getUsers();
+            if (users==null){
+                users = db.getDao().getAll();
+                Model.getInstance().setUsers(users);
+            }
+            List<User> finalUsers = users;
             view.post(()->{
-                Log.d(MyStrings.PROVA, "AAAA "+ users);
+                if (finalUsers.size()!=0){
+                    //there is either one user with the same uid or none
+                    List<User> userSameUid= finalUsers.stream().filter(user -> user.getUid()==post.getAuthor()).collect(Collectors.toList());
+                    User dbUser = userSameUid.size()!=0 ? userSameUid.get(0) : null;
+                    if (dbUser !=null) {
+                        if (dbUser.getPversion() < post.getPversion()) {
+                            //if the picVersion is less recent than the one on the server => download most recent
+                            retrieveImageFromServer(post);
+
+                        } else {
+                            //if I have the most recent image I can set it
+                            setBase64Pic(dbUser.getPicture());
+                            Log.d(MyStrings.DB, "set pricture from database");
+                        }
+                    }else {
+                        retrieveImageFromServer(post);
+                    }
+                }else {
+                    retrieveImageFromServer(post);
+                }
+
             });
         }).start();
 
@@ -82,5 +115,37 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
             }
             post.setFollowingAuthor(!post.isFollowingAuthor());
         });
+    }
+
+    private void retrieveImageFromServer(Post post) {
+        CommunicationController.getUserPicture(view.getContext(), Model.getInstance().getSid(), post.getAuthor(),
+                response -> {
+                    Log.d(MyStrings.VOLLEY, response.toString());
+                    try {
+                        String picture = response.getString("picture");
+                        setBase64Pic(picture);
+                        saveToDB(new User(post.getAuthor(), post.getAuthorName(), picture, post.getPversion()));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> Log.d(MyStrings.VOLLEY, error.toString()));
+    }
+
+    public void saveToDB( User user) {
+        new Thread(() -> {
+            db.getDao().insert(user);
+        }).start();
+
+
+    }
+
+    private void setBase64Pic(String picture) {
+        if (picture!=null && picture.length()>100){
+            byte[] decodedString = Base64.decode(picture, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            if(profilePic!=null)
+                profilePic.setImageBitmap(decodedByte);
+        }
+
     }
 }

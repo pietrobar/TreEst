@@ -119,6 +119,17 @@ public class CommunicationController {
 
     }
 
+    public static void getUserPicture(Context context, String sid, int uid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
+        final JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("sid", sid);
+            jsonBody.put("uid", uid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sendPostRequest(GET_USER_PICTURE, context,jsonBody,responseListener,errorListener);
+    }
+
 
     private static void sendPostRequest(String urlEnd, Context context, JSONObject jsonBody, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         RequestQueue queue = Volley.newRequestQueue(context);

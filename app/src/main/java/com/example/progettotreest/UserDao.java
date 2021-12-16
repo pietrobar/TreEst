@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.ArrayList;
@@ -15,7 +16,10 @@ public interface UserDao {
     List<User> getAll();
 
     @Insert
-    void insertAll(ArrayList<User> students);
+    void insertAll(ArrayList<User> users);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(User user);
 
 
 }

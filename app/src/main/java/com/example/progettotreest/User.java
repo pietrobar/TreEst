@@ -16,9 +16,9 @@ public class User {
     @ColumnInfo
     private String picture;
     @ColumnInfo
-    private String pversion;
+    private int pversion;
 
-    public User(int uid, String name, String picture, String pversion) {
+    public User(int uid, String name, String picture, int pversion) {
         this.uid = uid;
         this.name = name;
         this.picture = picture;
@@ -49,13 +49,22 @@ public class User {
         this.picture = picture;
     }
 
-    public String getPversion() {
+    public int getPversion() {
         return pversion;
     }
 
-    public void setPversion(String pversion) {
+    public void setPversion(int pversion) {
         this.pversion = pversion;
     }
 
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", name='" + name + '\'' +
+                ", picture='" + picture + '\'' +
+                ", pversion=" + pversion +
+                '}';
+    }
 }

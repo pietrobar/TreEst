@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class BoardActivity extends AppCompatActivity {
 
     @Override
@@ -21,7 +23,6 @@ public class BoardActivity extends AppCompatActivity {
         Line line = (Line) getIntent().getSerializableExtra("line");
         int did = getIntent().getIntExtra("did", -1);
         TextView selectedDirectionTV = findViewById(R.id.selectedDirection_tv);
-        //todo: settare il nome della linea e la direzione
         selectedDirectionTV.setText(line.getNameBasedOnDid(did));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView_posts);

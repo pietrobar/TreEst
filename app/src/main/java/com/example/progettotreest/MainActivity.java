@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("did", did);
             startActivity(intent);
         }
+        //todo: gestire il caso in cui al primo accesso non setto la linea preferita
 
     }
 

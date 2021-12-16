@@ -130,6 +130,21 @@ public class CommunicationController {
         sendPostRequest(GET_USER_PICTURE, context,jsonBody,responseListener,errorListener);
     }
 
+    public static void setProfile(Context context, String sid, String picture,String name, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
+        final JSONObject jsonBody = new JSONObject();
+        try {
+
+            jsonBody.put("sid", sid);
+            if (name!=null)
+                jsonBody.put("name", name);
+            if (picture!=null)
+                jsonBody.put("picture", picture);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sendPostRequest(SET_PROFILE, context,jsonBody,responseListener,errorListener);
+    }
+
 
     private static void sendPostRequest(String urlEnd, Context context, JSONObject jsonBody, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         RequestQueue queue = Volley.newRequestQueue(context);

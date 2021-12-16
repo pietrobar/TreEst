@@ -66,17 +66,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*public void saveToDB() {
-        new Thread(()->{
-            db.dao().insertAll(students);
-        }).start();
 
-    }
-
-    public void initializeFromDB(){
-        new Thread(()->{
-            students.addAll(db.dao().getAll());
-        }).start();
-
-    }*/
 }

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,23 @@ public class BoardActivity extends AppCompatActivity {
             Intent intent = new Intent(this, NewPostActivity.class);
             intent.putExtra("did", did);
             startActivity(intent);
+        });
+
+        findViewById(R.id.switch_line_btn).setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = this.getSharedPreferences(MyStrings.PREFS, 0);
+            int currentDid = sharedPreferences.getInt("did",-1);
+            //invert terminus
+            int newDid = line.getTerminus1().getDid()==currentDid ? line.getTerminus2().getDid() : line.getTerminus1().getDid();
+            selectedDirectionTV.setText(line.getNameBasedOnDid(newDid));
+            //save new did
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("did",newDid);
+            editor.commit();
+            Model.getInstance().retrievePosts(this, newDid, adapter);
+
+
+
         });
 
     }

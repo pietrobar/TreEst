@@ -23,7 +23,7 @@
         android:id="@+id/recyclerView_posts"
         android:layout_width="359dp"
         android:layout_height="424dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="120dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView" />
@@ -77,6 +77,20 @@
         app:layout_constraintBottom_toTopOf="@+id/recyclerView_posts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/switch_line_btn"
+        android:layout_width="60dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="175dp"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="#00FFFFFF"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectedDirection_tv"
+        app:srcCompat="@drawable/switch_line"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -145,6 +145,17 @@ public class CommunicationController {
         sendPostRequest(SET_PROFILE, context,jsonBody,responseListener,errorListener);
     }
 
+    public static void getStations(Context context, String sid, int did, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
+        final JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("sid", sid);
+            jsonBody.put("did", did);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sendPostRequest(GET_STATIONS, context,jsonBody,responseListener,errorListener);
+    }
+
 
     private static void sendPostRequest(String urlEnd, Context context, JSONObject jsonBody, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         RequestQueue queue = Volley.newRequestQueue(context);

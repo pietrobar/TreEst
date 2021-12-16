@@ -58,6 +58,7 @@ public class BoardActivity extends AppCompatActivity {
 
         findViewById(R.id.details_btn).setOnClickListener(v ->{
             Intent intent = new Intent(this, MapActivity.class);
+            intent.putExtra("did",did);
             startActivity(intent);
         });
 

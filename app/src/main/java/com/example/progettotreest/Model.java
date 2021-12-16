@@ -11,6 +11,8 @@ import org.json.JSONObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Model {
@@ -114,6 +116,7 @@ public class Model {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    Collections.sort(posts, (o1, o2) -> Boolean.compare(!o1.isFollowingAuthor(),!o2.isFollowingAuthor()));
                     adapter.notifyDataSetChanged();
 
                 },

@@ -2,8 +2,10 @@ package com.example.progettotreest;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -45,14 +47,23 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                        showSelectedImage(selectedImage);
+
 
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         selectedImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream .toByteArray();
-                        //todo: controlla che l'immagine non sia più di 137000 caratteri
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        //todo: controlla che l'immagine sia quadrata
 
                         newImage=Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        if (newImage.length()>137000){
+                            new AlertDialog.Builder(this)
+                                    .setTitle("L'immagine è troppo grande")
+                                    .setNegativeButton(android.R.string.ok, null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }else {
+                            showSelectedImage(selectedImage);
+                        }
                     }
 
                     else

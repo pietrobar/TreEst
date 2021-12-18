@@ -1,7 +1,9 @@
 package com.example.progettotreest;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
@@ -52,6 +55,10 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         commentTV.setText(post.getComment());
         datetimeTV.setText(post.getDatetime());
 
+        //I have to set the placeholder, otherwise the viewholder will set the same image of the recycled component
+        Resources res = view.getContext().getResources();
+        Drawable placeholder = ResourcesCompat.getDrawable(res, R.drawable.profile_btn_img,null);
+        profilePic.setImageDrawable(placeholder);
         new Thread(() -> {
             //to don't always retrieve users from db
             List<User> users = Model.getInstance().getUsers();

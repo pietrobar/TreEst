@@ -35,7 +35,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     int did;
     private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =0;
     private FusedLocationProviderClient fusedLocationClient;
-
+    private GoogleMap googleMap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +75,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         // Got last known location. In some rare situations this can be null.
                     if (location != null) {
                         Log.d("Location", "Current location:" + location.toString());
+                        if (this.googleMap!=null){
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 12f));
+                        }
+                        //todo: se finisce prima che sia pronta la mappa questo non funziona
                     } else {
                         Log.d("Location", "Current location not available");
                     } });
@@ -83,8 +87,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.464211,9.191383), 12f));
+        this.googleMap=googleMap;
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.464211,9.191383), 12f));
 
         CommunicationController.getStations(this, Model.getInstance().getSid(), did, response -> {
            Log.d(MyStrings.VOLLEY, "Stazioni: "+response.toString());

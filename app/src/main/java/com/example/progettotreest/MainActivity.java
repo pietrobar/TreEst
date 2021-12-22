@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView_lines);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new LinesAdapter(this);
-        recyclerView.setAdapter(adapter);
+
 
         findViewById(R.id.imageButton).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProfileSettingsActivity.class);
@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         });
         if(sid.equals("")){//first time
             CommunicationController.register(this, adapter);//pass the adapter to update it at the end of the async call
+        }else if(!sid.equals("") && sharedPref.getInt("did", -1)==-1){//second access BUT did was not set
+            Model.getInstance().setSid(sid);
+            Model.getInstance().retrieveLines(this, adapter);
         }else {//second time
             //Already registered
             Model.getInstance().setSid(sid);
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("did", did);
             startActivity(intent);
         }
+
+        recyclerView.setAdapter(adapter);
         //todo: gestire il caso in cui al primo accesso non setto la linea preferita
 
     }
@@ -61,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         //if I'm coming back from the boardActivity I have to check if there are lines
         SharedPreferences sharedPref = getSharedPreferences(MyStrings.PREFS, 0);
         String sid = sharedPref.getString("sid", "");
-        if (!sid.equals("") && Model.getInstance().getLinesSize()==0){//the sid is needed because I want to know if it's the first acces
+        if (!sid.equals("") && Model.getInstance().getLinesSize()==0 && sharedPref.getInt("did", -1)!=-1){//the sid is needed because I want to know if it's the first acces
             Model.getInstance().retrieveLines(this,adapter);
         }
     }

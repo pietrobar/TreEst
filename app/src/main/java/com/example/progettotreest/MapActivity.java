@@ -76,7 +76,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if (location != null) {
                         Log.d("Location", "Current location:" + location.toString());
                         if (this.googleMap!=null){
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 12f));
+                            this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 12f));
+                            this.googleMap.setMyLocationEnabled(true);
                         }
                         //todo: se finisce prima che sia pronta la mappa questo non funziona
                     } else {

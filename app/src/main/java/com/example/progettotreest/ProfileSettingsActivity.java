@@ -52,12 +52,12 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         selectedImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
-                        //todo: controlla che l'immagine sia quadrata
+                        //todo: controlla che il codice per controllare l'immagine sia corretto
 
                         newImage=Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        if (newImage.length()>137000){
+                        if (newImage.length()>137000 || selectedImage.getHeight()!=selectedImage.getWidth()){
                             new AlertDialog.Builder(this)
-                                    .setTitle("L'immagine è troppo grande")
+                                    .setTitle("L'immagine è troppo grande o non è quadrata")
                                     .setNegativeButton(android.R.string.ok, null)
                                     .setIcon(android.R.drawable.ic_dialog_alert)
                                     .show();

@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         recyclerView.setAdapter(adapter);
-        //todo: gestire il caso in cui al primo accesso non setto la linea preferita
 
     }
 

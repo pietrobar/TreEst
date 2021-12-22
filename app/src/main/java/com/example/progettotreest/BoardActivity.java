@@ -62,5 +62,10 @@ public class BoardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        findViewById(R.id.imageButton).setOnClickListener(v->{
+            Intent intent = new Intent(this, ProfileSettingsActivity.class);
+            startActivity(intent);
+        });
+
     }
 }

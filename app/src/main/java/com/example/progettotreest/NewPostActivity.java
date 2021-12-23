@@ -1,5 +1,6 @@
 package com.example.progettotreest;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -26,19 +27,28 @@ public class NewPostActivity extends AppCompatActivity {
         findViewById(R.id.publish_btn).setOnClickListener(v -> {
             //todo: controlla che almeno uno degli edit text sia pieno
 
+            if (commentIT.getText().length()<100){
+                CommunicationController.addPost(this, Model.getInstance().getSid(),did,
+                        delayIT.getText().toString(),
+                        statusIT.getText().toString(),
+                        commentIT.getText().toString(),
+                        response -> {
+                            Log.d(MyStrings.VOLLEY, "Just added a post");
+                        },
+                        error -> {
+                            Log.d(MyStrings.VOLLEY, error.toString());
+                        });
 
-            CommunicationController.addPost(this, Model.getInstance().getSid(),did,
-                    Integer.parseInt(delayIT.getText().toString()),
-                    Integer.parseInt(statusIT.getText().toString()),
-                    commentIT.getText().toString(),
-                    response -> {
-                        Log.d(MyStrings.VOLLEY, "Just added a post");
-                    },
-                    error -> {
-                        Log.d(MyStrings.VOLLEY, error.toString());
-                    });
+                super.onBackPressed();
+            }else{
+                new AlertDialog.Builder(this)
+                        .setTitle("Il commento è troppo lungo")
+                        .setMessage("Scrivi un commento di massimo 100 caratteri")
+                        .setNegativeButton(android.R.string.ok, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
 
-            super.onBackPressed();
         });
 
     }

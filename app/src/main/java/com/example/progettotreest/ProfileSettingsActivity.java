@@ -52,7 +52,6 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         selectedImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
-                        //todo: controlla che il codice per controllare l'immagine sia corretto
 
                         newImage=Base64.encodeToString(byteArray, Base64.DEFAULT);
                         if (newImage.length()>137000 || selectedImage.getHeight()!=selectedImage.getWidth()){

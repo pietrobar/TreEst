@@ -89,9 +89,18 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 Log.d(MyStrings.PROVA, "name changed: "+newName);
 
             }
+            if(newName.length()>20){
+                new AlertDialog.Builder(this)
+                        .setTitle("Nome utente troppo lungo:")
+                        .setMessage("Il nome utente dovrebbe avere massimo 20 caratteri")
+                        .setNegativeButton(android.R.string.ok, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }else{
+                CommunicationController.setProfile(this, Model.getInstance().getSid(), newImage, newName,response -> Log.d(MyStrings.VOLLEY,"aaa " + response.toString()),error -> Log.d(MyStrings.VOLLEY,error.toString()));
+                super.onBackPressed();
+            }
 
-            CommunicationController.setProfile(this, Model.getInstance().getSid(), newImage, newName,response -> Log.d(MyStrings.VOLLEY,"aaa " + response.toString()),error -> Log.d(MyStrings.VOLLEY,error.toString()));
-            super.onBackPressed();
 
         });
 

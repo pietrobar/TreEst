@@ -45,7 +45,7 @@ public class BoardActivity extends AppCompatActivity {
         //DEFINE BUTTONS LISTENERS
         findViewById(R.id.new_post_btn).setOnClickListener(v -> {
             Intent intent = new Intent(this, NewPostActivity.class);
-            intent.putExtra("did", did);
+            intent.putExtra("did", this.did);
             startActivity(intent);
         });
 
@@ -56,16 +56,16 @@ public class BoardActivity extends AppCompatActivity {
             int newDid = line.getTerminus1().getDid()==currentDid ? line.getTerminus2().getDid() : line.getTerminus1().getDid();
             selectedDirectionTV.setText(line.getNameBasedOnDid(newDid));
             //save new did
-
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("did",newDid);
             editor.commit();
+            this.did=newDid;
             Model.getInstance().retrievePosts(this, newDid, adapter);
         });
 
         findViewById(R.id.details_btn).setOnClickListener(v ->{
             Intent intent = new Intent(this, MapActivity.class);
-            intent.putExtra("did",did);
+            intent.putExtra("did",this.did);
             startActivity(intent);
         });
 

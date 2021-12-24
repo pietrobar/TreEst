@@ -34,7 +34,7 @@ public class BoardActivity extends AppCompatActivity {
         PostsAdapter adapter = new PostsAdapter(this);
         recyclerView.setAdapter(adapter);
 
-
+        Model.getInstance().setPostAdapter(adapter);
         this.adapter= adapter;
         this.did=did;
 
@@ -79,7 +79,7 @@ public class BoardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //I want to update the posts content when I publish a post
+        //I want to update the posts content whenever i get back from another activity
         if (this.adapter!=null && this.did!=-1)
             CommunicationController.retrievePosts(this, this.did, this.adapter);
 

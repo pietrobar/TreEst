@@ -33,6 +33,8 @@ public class NewPostActivity extends AppCompatActivity {
                             commentIT.getText().toString(),
                             response -> {
                                 Log.d(MyStrings.VOLLEY, "Just added a post");
+                                CommunicationController.retrievePosts(this, did, Model.getInstance().getPostAdapter());
+
                             },
                             error -> {
                                 Log.d(MyStrings.VOLLEY, error.toString());

@@ -22,6 +22,7 @@ public class Model {
     private String sid = null;
     private Database db;
     private List<User> users;
+    private PostsAdapter postAdapter;
 
 
     public static synchronized Model getInstance() {
@@ -101,5 +102,13 @@ public class Model {
     public void sortPosts() {
         Collections.sort(posts, (o1, o2) -> Boolean.compare(!o1.isFollowingAuthor(),!o2.isFollowingAuthor()));
 
+    }
+
+    public PostsAdapter getPostAdapter() {
+        return this.postAdapter;
+    }
+
+    public void setPostAdapter(PostsAdapter adapter){
+        this.postAdapter = adapter;
     }
 }

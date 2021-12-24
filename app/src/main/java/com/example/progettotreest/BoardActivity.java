@@ -38,7 +38,7 @@ public class BoardActivity extends AppCompatActivity {
         this.adapter= adapter;
         this.did=did;
 
-        Model.getInstance().retrievePosts(this, did, adapter);
+        CommunicationController.retrievePosts(this, did, adapter);
 
 
 
@@ -60,7 +60,7 @@ public class BoardActivity extends AppCompatActivity {
             editor.putInt("did",newDid);
             editor.commit();
             this.did=newDid;
-            Model.getInstance().retrievePosts(this, newDid, adapter);
+            CommunicationController.retrievePosts(this, newDid, adapter);
         });
 
         findViewById(R.id.details_btn).setOnClickListener(v ->{
@@ -81,7 +81,7 @@ public class BoardActivity extends AppCompatActivity {
         super.onResume();
         //I want to update the posts content when I publish a post
         if (this.adapter!=null && this.did!=-1)
-            Model.getInstance().retrievePosts(this, this.did, this.adapter);
+            CommunicationController.retrievePosts(this, this.did, this.adapter);
 
     }
 }

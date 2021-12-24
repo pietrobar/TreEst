@@ -54,52 +54,6 @@ public class Model {
         return lines.size();
     }
 
-
-
-
-
-
-
-
-
-    //todo: considerare come opzione quella di fare un setContext e settare l'application context dalla main activity
-
-
-    public void retrievePosts(Context context, int did, PostsAdapter adapter) {
-        posts.clear();
-        CommunicationController.getPosts(context, this.sid, did,
-                response->{
-                    Log.d(MyStrings.VOLLEY,"Just Received posts: " + response.toString());
-                    JSONArray postsJson = null;
-                    try {
-                        postsJson = response.getJSONArray("posts");
-                        for(int i = 0; i < postsJson.length(); i++) {
-                            JSONObject post = postsJson.getJSONObject(i);
-
-                            String datetime =  post.getString("datetime");
-                            String subDate = datetime.substring(0,datetime.indexOf("."));
-                            posts.add(new Post(
-                                    post.has("delay")?post.getInt("delay"):-1,
-                                    post.has("status")?post.getInt("status"):-1,
-                                    post.has("comment")?post.getString("comment"):"No Comment",
-                                    post.getBoolean("followingAuthor"),
-                                    subDate,
-                                    post.getString("authorName"),
-                                    post.getInt("pversion"),
-                                    post.getInt("author")));
-
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Collections.sort(posts, (o1, o2) -> Boolean.compare(!o1.isFollowingAuthor(),!o2.isFollowingAuthor()));
-                    adapter.notifyDataSetChanged();
-
-                },
-                error->{Log.d(MyStrings.VOLLEY,"Errore "+error);});
-    }
-
-
     public void setSid(String sid) {
         this.sid=sid;
     }
@@ -134,5 +88,18 @@ public class Model {
 
     public void addLine(Line line) {
         this.lines.add(line);
+    }
+
+    public void clearPosts() {
+        this.posts.clear();
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
+    }
+
+    public void sortPosts() {
+        Collections.sort(posts, (o1, o2) -> Boolean.compare(!o1.isFollowingAuthor(),!o2.isFollowingAuthor()));
+
     }
 }

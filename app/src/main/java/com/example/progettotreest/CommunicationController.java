@@ -17,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
+
 public class CommunicationController {
     private static final String URL = "https://ewserver.di.unimi.it/mobicomp/treest/";
     private static final String GET_PROFILE = "getProfile.php";
@@ -72,6 +74,40 @@ public class CommunicationController {
                 },
                 error -> Log.d(MyStrings.VOLLEY, "ERRORE " + error.toString()));
 
+    }
+
+    public static void retrievePosts(Context context, int did, PostsAdapter adapter) {
+        Model.getInstance().clearPosts();
+        CommunicationController.getPosts(context, Model.getInstance().getSid(), did,
+                response->{
+                    Log.d(MyStrings.VOLLEY,"Just Received posts: " + response.toString());
+                    JSONArray postsJson = null;
+                    try {
+                        postsJson = response.getJSONArray("posts");
+                        for(int i = 0; i < postsJson.length(); i++) {
+                            JSONObject post = postsJson.getJSONObject(i);
+
+                            String datetime =  post.getString("datetime");
+                            String subDate = datetime.substring(0,datetime.indexOf("."));
+                            Model.getInstance().addPost(new Post(
+                                    post.has("delay")?post.getInt("delay"):-1,
+                                    post.has("status")?post.getInt("status"):-1,
+                                    post.has("comment")?post.getString("comment"):"No Comment",
+                                    post.getBoolean("followingAuthor"),
+                                    subDate,
+                                    post.getString("authorName"),
+                                    post.getInt("pversion"),
+                                    post.getInt("author")));
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Model.getInstance().sortPosts();
+                    adapter.notifyDataSetChanged();
+
+                },
+                error->{Log.d(MyStrings.VOLLEY,"Errore "+error);});
     }
 
     public static void getProfile(Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){

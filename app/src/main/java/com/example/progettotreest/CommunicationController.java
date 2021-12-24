@@ -45,6 +45,17 @@ public class CommunicationController {
                 //set sid to model and retrieve the lines
                 Model.getInstance().setSid(response.getString("sid"));
                 CommunicationController.retrieveLines(context, adapter);
+                CommunicationController.getProfile(context,Model.getInstance().getSid(), res->{
+                    Log.d(VOLLEY, "Received: " + res.toString());
+                    //I want to save into shared preferences the UID
+                    try {
+                        editor.putString("uid", res.getString("uid"));
+                        Model.getInstance().setUid(res.getString("uid"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    editor.commit();
+                },err->{Log.d(MyStrings.VOLLEY, err.toString());});
             } catch (JSONException e) {
                 e.printStackTrace();
             }},error -> Log.d(VOLLEY, error.toString()));

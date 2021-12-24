@@ -1,5 +1,6 @@
 package com.example.progettotreest;
 
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +30,8 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     private ImageView profilePic;
     private PostsAdapter adapter;
 
+    private String uid;
+
 
     Database db;
     private View view;
@@ -45,6 +48,14 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         db = Model.getInstance().getDB();
         this.view=itemView;
         this.adapter=adapter;
+
+        if (Model.getInstance().getUid()!=null){
+            this.uid = Model.getInstance().getUid();
+        }else {
+            //get UID from sharedPref
+            SharedPreferences sharedPref = view.getContext().getSharedPreferences(MyStrings.PREFS, 0);
+            this.uid = sharedPref.getString("uid", "");
+        }
 
     }
 
@@ -94,36 +105,42 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         }).start();
 
 
-        //todo: controllare che non sia io l'autore del post e in caso togliere il bottone
-        if (post.isFollowingAuthor()){
-            followUnfollowBtn.setText("-");
-        }else {
-            followUnfollowBtn.setText("+");
+        if(Integer.parseInt(this.uid)==post.getAuthor()){
+            //I'm the author
+            followUnfollowBtn.setEnabled(false);
+        }else{
+            followUnfollowBtn.setEnabled(true);
+            if (post.isFollowingAuthor()){
+                followUnfollowBtn.setText("-");
+            }else {
+                followUnfollowBtn.setText("+");
+            }
+
+            followUnfollowBtn.setOnClickListener(v -> {
+                if(!post.isFollowingAuthor()) {
+                    CommunicationController.follow(v.getContext(), Model.getInstance().getSid(), post.getAuthor(),
+                            response -> {
+                                Log.d(MyStrings.VOLLEY, "Follow uid: " + post.getAuthor() + " " + post.getAuthorName());
+                                followUnfollowBtn.setText("-");
+                            }, error -> {
+                                Log.d(MyStrings.VOLLEY, "Error: " + error);
+                            });
+                }else {
+                    CommunicationController.unfollow(v.getContext(), Model.getInstance().getSid(), post.getAuthor(),
+                            response -> {
+                                Log.d(MyStrings.VOLLEY, "Unfollow uid: " + post.getAuthor() + " " + post.getAuthorName());
+                                followUnfollowBtn.setText("+");
+                            }, error -> {
+                                Log.d(MyStrings.VOLLEY, "Error: " + error);
+                            });
+
+                }
+                post.setFollowingAuthor(!post.isFollowingAuthor());
+                Model.getInstance().refreshPostsFollowsLocally(post);
+                this.adapter.notifyDataSetChanged();
+            });
         }
 
-        followUnfollowBtn.setOnClickListener(v -> {
-            if(!post.isFollowingAuthor()) {
-                CommunicationController.follow(v.getContext(), Model.getInstance().getSid(), post.getAuthor(),
-                        response -> {
-                            Log.d(MyStrings.VOLLEY, "Follow uid: " + post.getAuthor() + " " + post.getAuthorName());
-                            followUnfollowBtn.setText("-");
-                        }, error -> {
-                            Log.d(MyStrings.VOLLEY, "Error: " + error);
-                        });
-            }else {
-                CommunicationController.unfollow(v.getContext(), Model.getInstance().getSid(), post.getAuthor(),
-                        response -> {
-                            Log.d(MyStrings.VOLLEY, "Unfollow uid: " + post.getAuthor() + " " + post.getAuthorName());
-                            followUnfollowBtn.setText("+");
-                        }, error -> {
-                            Log.d(MyStrings.VOLLEY, "Error: " + error);
-                        });
-
-            }
-            post.setFollowingAuthor(!post.isFollowingAuthor());
-            Model.getInstance().refreshPostsFollowsLocally(post);
-            this.adapter.notifyDataSetChanged();
-        });
     }
 
     private void retrieveImageFromServer(Post post) {

@@ -23,6 +23,7 @@ public class Model {
     private Database db;
     private List<User> users;
     private PostsAdapter postAdapter;
+    private String uid;
 
 
     public static synchronized Model getInstance() {
@@ -110,5 +111,13 @@ public class Model {
 
     public void setPostAdapter(PostsAdapter adapter){
         this.postAdapter = adapter;
+    }
+
+    public void setUid(String uid) {
+        this.uid=uid;
+    }
+
+    public String getUid() {
+        return uid;
     }
 }

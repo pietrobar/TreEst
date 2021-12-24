@@ -15,6 +15,9 @@ import java.util.List;
 
 public class BoardActivity extends AppCompatActivity {
 
+    private PostsAdapter adapter=null;
+    private int did=-1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +34,15 @@ public class BoardActivity extends AppCompatActivity {
         PostsAdapter adapter = new PostsAdapter(this);
         recyclerView.setAdapter(adapter);
 
+
+        this.adapter= adapter;
+        this.did=did;
+
         Model.getInstance().retrievePosts(this, did, adapter);
 
+
+
+        //DEFINE BUTTONS LISTENERS
         findViewById(R.id.new_post_btn).setOnClickListener(v -> {
             Intent intent = new Intent(this, NewPostActivity.class);
             intent.putExtra("did", did);
@@ -51,9 +61,6 @@ public class BoardActivity extends AppCompatActivity {
             editor.putInt("did",newDid);
             editor.commit();
             Model.getInstance().retrievePosts(this, newDid, adapter);
-
-
-
         });
 
         findViewById(R.id.details_btn).setOnClickListener(v ->{
@@ -66,6 +73,15 @@ public class BoardActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ProfileSettingsActivity.class);
             startActivity(intent);
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //I want to update the posts content when I publish a post
+        if (this.adapter!=null && this.did!=-1)
+            Model.getInstance().retrievePosts(this, this.did, this.adapter);
 
     }
 }

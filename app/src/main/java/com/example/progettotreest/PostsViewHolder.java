@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     private TextView delayTV;
     private TextView statusTV;
     private TextView commentTV;
-    private Button followUnfollowBtn;
+    private ImageButton followUnfollowBtn;
     private TextView datetimeTV;
     private ImageView profilePic;
     private PostsAdapter adapter;
@@ -111,9 +112,9 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         }else{
             followUnfollowBtn.setEnabled(true);
             if (post.isFollowingAuthor()){
-                followUnfollowBtn.setText("-");
+                followUnfollowBtn.setImageResource(R.drawable.unfollow);
             }else {
-                followUnfollowBtn.setText("+");
+                followUnfollowBtn.setImageResource(R.drawable.follow);
             }
 
             followUnfollowBtn.setOnClickListener(v -> {
@@ -121,7 +122,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
                     CommunicationController.follow(v.getContext(), Model.getInstance().getSid(), post.getAuthor(),
                             response -> {
                                 Log.d(MyStrings.VOLLEY, "Follow uid: " + post.getAuthor() + " " + post.getAuthorName());
-                                followUnfollowBtn.setText("-");
+                                followUnfollowBtn.setImageResource(R.drawable.unfollow);
                             }, error -> {
                                 Log.d(MyStrings.VOLLEY, "Error: " + error);
                             });
@@ -129,7 +130,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
                     CommunicationController.unfollow(v.getContext(), Model.getInstance().getSid(), post.getAuthor(),
                             response -> {
                                 Log.d(MyStrings.VOLLEY, "Unfollow uid: " + post.getAuthor() + " " + post.getAuthorName());
-                                followUnfollowBtn.setText("+");
+                                followUnfollowBtn.setImageResource(R.drawable.follow);
                             }, error -> {
                                 Log.d(MyStrings.VOLLEY, "Error: " + error);
                             });

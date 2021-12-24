@@ -63,31 +63,7 @@ public class Model {
 
 
     //todo: considerare come opzione quella di fare un setContext e settare l'application context dalla main activity
-    public void retrieveLines(Context context, LinesAdapter adapter){
-        CommunicationController.getLines(context, this.sid,
-                response -> {
-                    Log.d(MyStrings.VOLLEY, "Just received lines " + response.toString());
-                    try {
 
-                        JSONArray linesJson = response.getJSONArray("lines");
-                        for(int i = 0; i < linesJson.length(); i++) {
-                            JSONObject line = linesJson.getJSONObject(i);
-                            JSONObject t1 = line.getJSONObject("terminus1");
-                            JSONObject t2 = line.getJSONObject("terminus2");
-                            lines.add(new Line(new Terminus(t1.getString("sname"), t1.getInt("did")),
-                                                new Terminus(t2.getString("sname"),t2.getInt("did"))));
-
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    adapter.notifyDataSetChanged();
-                },
-                error -> Log.d(MyStrings.VOLLEY, "ERRORE " + error.toString()));
-
-    }
 
     public void retrievePosts(Context context, int did, PostsAdapter adapter) {
         posts.clear();
@@ -154,5 +130,9 @@ public class Model {
                 toUpdate.setFollowingAuthor(post.isFollowingAuthor());
             }
         }
+    }
+
+    public void addLine(Line line) {
+        this.lines.add(line);
     }
 }

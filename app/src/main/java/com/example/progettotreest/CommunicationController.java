@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,11 +42,38 @@ public class CommunicationController {
                 editor.commit();
                 //set sid to model and retrieve the lines
                 Model.getInstance().setSid(response.getString("sid"));
-                Model.getInstance().retrieveLines(context, adapter);
+                CommunicationController.retrieveLines(context, adapter);
             } catch (JSONException e) {
                 e.printStackTrace();
             }},error -> Log.d(VOLLEY, error.toString()));
     }
+
+    public static void retrieveLines(Context context, LinesAdapter adapter){
+        CommunicationController.getLines(context, Model.getInstance().getSid(),
+                response -> {
+                    Log.d(MyStrings.VOLLEY, "Just received lines " + response.toString());
+                    try {
+
+                        JSONArray linesJson = response.getJSONArray("lines");
+                        for(int i = 0; i < linesJson.length(); i++) {
+                            JSONObject line = linesJson.getJSONObject(i);
+                            JSONObject t1 = line.getJSONObject("terminus1");
+                            JSONObject t2 = line.getJSONObject("terminus2");
+                            Model.getInstance().addLine(new Line(new Terminus(t1.getString("sname"), t1.getInt("did")),
+                                    new Terminus(t2.getString("sname"),t2.getInt("did"))));
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    adapter.notifyDataSetChanged();
+                },
+                error -> Log.d(MyStrings.VOLLEY, "ERRORE " + error.toString()));
+
+    }
+
     public static void getProfile(Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         final JSONObject jsonBody = new JSONObject();
         try {

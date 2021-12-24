@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             CommunicationController.register(this, adapter);//pass the adapter to update it at the end of the async call
         }else if(!sid.equals("") && sharedPref.getInt("did", -1)==-1){//second access BUT did was not set
             Model.getInstance().setSid(sid);
-            Model.getInstance().retrieveLines(this, adapter);
+            CommunicationController.retrieveLines(this, adapter);
         }else {//second time
             //Already registered
             Model.getInstance().setSid(sid);
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences(MyStrings.PREFS, 0);
         String sid = sharedPref.getString("sid", "");
         if (!sid.equals("") && Model.getInstance().getLinesSize()==0 && sharedPref.getInt("did", -1)!=-1){//the sid is needed because I want to know if it's the first acces
-            Model.getInstance().retrieveLines(this,adapter);
+            CommunicationController.retrieveLines(this,adapter);
         }
     }
 

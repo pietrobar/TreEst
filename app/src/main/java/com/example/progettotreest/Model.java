@@ -147,4 +147,12 @@ public class Model {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    public void refreshPostsFollowsLocally(Post post) {
+        for (Post toUpdate: posts) {
+            if(toUpdate.getAuthor()==post.getAuthor()){
+                toUpdate.setFollowingAuthor(post.isFollowingAuthor());
+            }
+        }
+    }
 }

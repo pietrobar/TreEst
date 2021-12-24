@@ -27,12 +27,13 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     private Button followUnfollowBtn;
     private TextView datetimeTV;
     private ImageView profilePic;
+    private PostsAdapter adapter;
 
 
     Database db;
     private View view;
 
-    public PostsViewHolder(View itemView) {
+    public PostsViewHolder(View itemView, PostsAdapter adapter) {
         super(itemView);
         postAuthorTV = itemView.findViewById(R.id.post_author_tv);
         delayTV = itemView.findViewById(R.id.delay_tv);
@@ -43,7 +44,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         profilePic = itemView.findViewById(R.id.post_profilePic);
         db = Model.getInstance().getDB();
         this.view=itemView;
-
+        this.adapter=adapter;
 
     }
 
@@ -121,6 +122,8 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
 
             }
             post.setFollowingAuthor(!post.isFollowingAuthor());
+            Model.getInstance().refreshPostsFollowsLocally(post);
+            this.adapter.notifyDataSetChanged();
         });
     }
 

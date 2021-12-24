@@ -25,29 +25,36 @@ public class NewPostActivity extends AppCompatActivity {
         EditText commentIT = findViewById(R.id.comment_input_text);
 
         findViewById(R.id.publish_btn).setOnClickListener(v -> {
-            //todo: controlla che almeno uno degli edit text sia pieno
+            if(delayIT.getText().length()!=0 || statusIT.getText().length()!=0 || commentIT.getText().length()!=0){
+                if (commentIT.getText().length()<100){
+                    CommunicationController.addPost(this, Model.getInstance().getSid(),did,
+                            delayIT.getText().toString(),
+                            statusIT.getText().toString(),
+                            commentIT.getText().toString(),
+                            response -> {
+                                Log.d(MyStrings.VOLLEY, "Just added a post");
+                            },
+                            error -> {
+                                Log.d(MyStrings.VOLLEY, error.toString());
+                            });
 
-            if (commentIT.getText().length()<100){
-                CommunicationController.addPost(this, Model.getInstance().getSid(),did,
-                        delayIT.getText().toString(),
-                        statusIT.getText().toString(),
-                        commentIT.getText().toString(),
-                        response -> {
-                            Log.d(MyStrings.VOLLEY, "Just added a post");
-                        },
-                        error -> {
-                            Log.d(MyStrings.VOLLEY, error.toString());
-                        });
-
-                super.onBackPressed();
-            }else{
+                    super.onBackPressed();
+                }else{
+                    new AlertDialog.Builder(this)
+                            .setTitle("Il commento è troppo lungo")
+                            .setMessage("Scrivi un commento di massimo 100 caratteri")
+                            .setNegativeButton(android.R.string.ok, null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+            }else {
                 new AlertDialog.Builder(this)
-                        .setTitle("Il commento è troppo lungo")
-                        .setMessage("Scrivi un commento di massimo 100 caratteri")
+                        .setTitle("Non è possibile pubblicare un commento vuoto")
                         .setNegativeButton(android.R.string.ok, null)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
+
 
         });
 

@@ -21,13 +21,17 @@
         android:id="@+id/direction1_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Direction1" />
+        android:backgroundTint="#3F51B5"
+        android:text="Direction1"
+        app:cornerRadius="10dp" />
 
     <Button
         android:id="@+id/direction2_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Direction2" />
+        android:backgroundTint="#3F51B5"
+        android:text="Direction2"
+        app:cornerRadius="10dp" />
 
     <View
         android:id="@+id/divider2"

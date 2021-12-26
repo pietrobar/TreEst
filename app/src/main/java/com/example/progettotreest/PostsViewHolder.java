@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,6 +52,8 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         datetimeTV = itemView.findViewById(R.id.datetime_textView);
         followUnfollowBtn = itemView.findViewById(R.id.follow_unfolllow_btn);
         profilePic = itemView.findViewById(R.id.post_profilePic);
+        delayInd.setClickable(false);
+        statusInd.setClickable(false);
 
         colorMap.put(-1,Color.GRAY);
         colorMap.put(0,Color.GREEN);
@@ -120,9 +123,9 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
 
         if(Integer.parseInt(this.uid)==post.getAuthor()){
             //I'm the author
-            followUnfollowBtn.setEnabled(false);
+            followUnfollowBtn.setVisibility(View.INVISIBLE);
         }else{
-            followUnfollowBtn.setEnabled(true);
+            followUnfollowBtn.setVisibility(View.VISIBLE);
             if (post.isFollowingAuthor()){
                 followUnfollowBtn.setImageResource(R.drawable.unfollow);
             }else {

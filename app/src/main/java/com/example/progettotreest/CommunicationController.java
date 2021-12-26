@@ -179,15 +179,15 @@ public class CommunicationController {
         sendPostRequest(UNFOLLOW, context,jsonBody,responseListener,errorListener);
     }
 
-    public static void addPost(Context context, String sid, int did, String delay, String status, String comment, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+    public static void addPost(Context context, String sid, int did, int delay, int status, String comment, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         final JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("sid", sid);
             jsonBody.put("did", did);
-            if (delay.length()!=0)
-                jsonBody.put("delay", Integer.parseInt(delay));
-            if (status.length()!=0)
-                jsonBody.put("status", Integer.parseInt(status));
+            if (delay!=-1)
+                jsonBody.put("delay", delay);
+            if (status!=-1)
+                jsonBody.put("status", status);
             if (comment.length()!= 0)
                 jsonBody.put("comment", comment);
         } catch (JSONException e) {

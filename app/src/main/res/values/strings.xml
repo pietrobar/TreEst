@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">ProgettoTreEst</string>
     <string name="treest">TreEst</string>
+    <string-array name="delay">
+        <item></item>
+        <item>In orario</item>
+        <item>In ritardo di pochi minuti</item>
+        <item>Ritardo oltre 15 minuti</item>
+        <item>Treno soppresso</item>
+    </string-array>
+    <string-array name="status">
+        <item></item>
+        <item>Situazione ideale</item>
+        <item>Accettabile</item>
+        <item>Gravi problemi per i passeggeri</item>
+    </string-array>
 </resources>

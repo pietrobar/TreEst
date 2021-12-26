@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class NewPostActivity extends AppCompatActivity {
 
@@ -19,17 +22,54 @@ public class NewPostActivity extends AppCompatActivity {
         //get did from previous activity
         int did = getIntent().getIntExtra("did",0);
 
-        //get all the input text field
-        EditText delayIT = findViewById(R.id.delay_input_text);
-        EditText statusIT = findViewById(R.id.status_input_text);
+
+        //value container of spinners
+        final int[] delayInfo = {-1};
+        final int[] statusInfo = {-1};
+        //setting spinners
+        final Spinner[] delaySpinner = {findViewById(R.id.delay_input_text)};
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,R.array.delay, android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        delaySpinner[0].setAdapter(adapter1);
+
+        delaySpinner[0].setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                delayInfo[0] =position-1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Spinner statusSpinner = findViewById(R.id.status_input_text);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,R.array.status, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(adapter2);
+
+        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                statusInfo[0] = position-1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         EditText commentIT = findViewById(R.id.comment_input_text);
 
         findViewById(R.id.publish_btn).setOnClickListener(v -> {
-            if(delayIT.getText().length()!=0 || statusIT.getText().length()!=0 || commentIT.getText().length()!=0){
+            if(delayInfo[0]!=-1 || statusInfo[0]!=-1 || commentIT.getText().length()!=0){
                 if (commentIT.getText().length()<100){
                     CommunicationController.addPost(this, Model.getInstance().getSid(),did,
-                            delayIT.getText().toString(),
-                            statusIT.getText().toString(),
+                            delayInfo[0],
+                            statusInfo[0],
                             commentIT.getText().toString(),
                             response -> {
                                 Log.d(MyStrings.VOLLEY, "Just added a post");
@@ -61,4 +101,5 @@ public class NewPostActivity extends AppCompatActivity {
         });
 
     }
+
 }

@@ -78,10 +78,9 @@
             <TextView
                 android:id="@+id/comment_tv"
                 android:layout_width="280dp"
-                android:layout_height="58dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="54dp"
                 android:layout_marginTop="17dp"
-                android:text="TextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/delay_tv" />
 

@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.util.Log;
@@ -18,18 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PostsViewHolder extends RecyclerView.ViewHolder{
     private TextView postAuthorTV;
-    private TextView delayTV;
-    private TextView statusTV;
     private TextView commentTV;
     private ImageButton followUnfollowBtn;
     private TextView datetimeTV;
     private ImageView profilePic;
     private PostsAdapter adapter;
+    private Button statusInd;
+    private Button delayInd;
+
+    private HashMap<Integer, Integer> colorMap=new HashMap<>();
+
 
     private String uid;
 
@@ -40,12 +45,19 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     public PostsViewHolder(View itemView, PostsAdapter adapter) {
         super(itemView);
         postAuthorTV = itemView.findViewById(R.id.post_author_tv);
-        delayTV = itemView.findViewById(R.id.delay_tv);
-        statusTV = itemView.findViewById(R.id.status_tv);
         commentTV = itemView.findViewById(R.id.comment_tv);
+        statusInd = itemView.findViewById(R.id.statusbtn);
+        delayInd = itemView.findViewById(R.id.delaybtn);
         datetimeTV = itemView.findViewById(R.id.datetime_textView);
         followUnfollowBtn = itemView.findViewById(R.id.follow_unfolllow_btn);
         profilePic = itemView.findViewById(R.id.post_profilePic);
+
+        colorMap.put(-1,Color.GRAY);
+        colorMap.put(0,Color.GREEN);
+        colorMap.put(1,Color.YELLOW);
+        colorMap.put(2,Color.RED);
+        colorMap.put(3,Color.BLACK);
+
         db = Model.getInstance().getDB();
         this.view=itemView;
         this.adapter=adapter;
@@ -63,8 +75,8 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     public void updateContent(Post post) {
 
         postAuthorTV.setText(post.getAuthorName());
-        delayTV.setText(String.valueOf(post.getDelay()));
-        statusTV.setText(String.valueOf(post.getStatus()));
+        delayInd.setBackgroundColor(colorMap.get(post.getDelay()));
+        statusInd.setBackgroundColor(colorMap.get(post.getStatus()));
         commentTV.setText(post.getComment());
         datetimeTV.setText(post.getDatetime());
 

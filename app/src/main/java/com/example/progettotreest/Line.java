@@ -27,4 +27,14 @@ public class Line implements Serializable {
             return getTerminus1().getSname() + " - " + getTerminus2().getSname();
         }
     }
+    //t1   t2 => did = 1 -> t2 - t1
+
+    public String getBegin(int did){
+        return getTerminus1().getDid()==did ? getTerminus2().getSname():getTerminus1().getSname();
+    }
+
+    public String getArrive(int did){
+        return getTerminus2().getDid()==did ? getTerminus2().getSname():getTerminus1().getSname();
+    }
+
 }

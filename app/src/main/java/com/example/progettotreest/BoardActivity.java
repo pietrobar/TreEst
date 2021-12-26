@@ -7,11 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-
-import java.util.List;
 
 public class BoardActivity extends AppCompatActivity {
 
@@ -26,8 +22,10 @@ public class BoardActivity extends AppCompatActivity {
         //get selected terminus from previous activity
         Line line = (Line) getIntent().getSerializableExtra("line");
         int did = getIntent().getIntExtra("did", -1);
-        TextView selectedDirectionTV = findViewById(R.id.selectedDirection_tv);
-        selectedDirectionTV.setText(line.getNameBasedOnDid(did));
+        TextView beginLabel = findViewById(R.id.from);
+        TextView arriveLabel = findViewById(R.id.to);
+        beginLabel.setText(line.getBegin(did));
+        arriveLabel.setText(line.getArrive(did));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView_posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,7 +52,8 @@ public class BoardActivity extends AppCompatActivity {
             int currentDid = sharedPreferences.getInt("did",-1);
             //invert terminus
             int newDid = line.getTerminus1().getDid()==currentDid ? line.getTerminus2().getDid() : line.getTerminus1().getDid();
-            selectedDirectionTV.setText(line.getNameBasedOnDid(newDid));
+            beginLabel.setText(line.getBegin(newDid));
+            arriveLabel.setText(line.getArrive(newDid));
             //save new did
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("did",newDid);

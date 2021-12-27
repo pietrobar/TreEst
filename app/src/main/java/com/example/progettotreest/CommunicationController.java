@@ -5,6 +5,8 @@ import static com.example.progettotreest.MyStrings.VOLLEY;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -83,8 +85,18 @@ public class CommunicationController {
                     }
                     adapter.notifyDataSetChanged();
                 },
-                error -> Log.d(MyStrings.VOLLEY, "ERRORE " + error.toString()));
+                error -> {
+                    Log.d(MyStrings.VOLLEY, "ERRORE " + error.toString());
+                    //probably error.getClass().getName() = "com.android.volley.NoConnectionError"
+                    connectionError(context,"Problema di connessione");
 
+                });
+
+    }
+
+    public static void connectionError(Context context, String message) {
+        Toast toast=Toast.makeText(context,message,Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     public static void retrievePosts(Context context, int did, PostsAdapter adapter) {
@@ -118,7 +130,10 @@ public class CommunicationController {
                     adapter.notifyDataSetChanged();
 
                 },
-                error->{Log.d(MyStrings.VOLLEY,"Errore "+error);});
+                error->{
+                    Log.d(MyStrings.VOLLEY,"Errore "+error);
+                    connectionError(context,"Problema di connessione");
+                });
     }
 
     public static void getProfile(Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){

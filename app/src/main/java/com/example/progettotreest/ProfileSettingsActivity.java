@@ -97,7 +97,11 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }else{
-                CommunicationController.setProfile(this, Model.getInstance().getSid(), newImage, newName,response -> Log.d(MyStrings.VOLLEY,"aaa " + response.toString()),error -> Log.d(MyStrings.VOLLEY,error.toString()));
+                CommunicationController.setProfile(this, Model.getInstance().getSid(), newImage, newName,response -> Log.d(MyStrings.VOLLEY,"aaa " + response.toString()),
+                        error -> {
+                            Log.d(MyStrings.VOLLEY,error.toString());
+                            CommunicationController.connectionError(this, "Impossibile effettuare operazione");
+                        });
                 super.onBackPressed();
             }
 
@@ -126,7 +130,10 @@ public class ProfileSettingsActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, error -> Log.d(MyStrings.VOLLEY, error.toString()));
+        }, error -> {
+            Log.d(MyStrings.VOLLEY, error.toString());
+            CommunicationController.connectionError(this,"Problema di connessione");
+        });
     }
 
     private void showSelectedImage(Bitmap decodedByte) {

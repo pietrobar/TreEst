@@ -110,7 +110,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, error -> Log.d(MyStrings.VOLLEY, error.toString()));
+        }, error -> {
+            Log.d(MyStrings.VOLLEY, error.toString());
+            CommunicationController.connectionError(this,"Problema di connessione");
+        });
 
     }
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

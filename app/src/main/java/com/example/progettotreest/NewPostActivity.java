@@ -78,6 +78,8 @@ public class NewPostActivity extends AppCompatActivity {
                             },
                             error -> {
                                 Log.d(MyStrings.VOLLEY, error.toString());
+                                CommunicationController.connectionError(this,"Impossibile effettuare operazione");
+
                             });
 
                     super.onBackPressed();

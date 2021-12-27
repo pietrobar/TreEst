@@ -139,6 +139,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
                                 followUnfollowBtn.setImageResource(R.drawable.unfollow);
                             }, error -> {
                                 Log.d(MyStrings.VOLLEY, "Error: " + error);
+                                CommunicationController.connectionError(view.getContext(),"Impossibile effettuare operazione");
                             });
                 }else {
                     CommunicationController.unfollow(v.getContext(), Model.getInstance().getSid(), post.getAuthor(),
@@ -147,6 +148,8 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
                                 followUnfollowBtn.setImageResource(R.drawable.follow);
                             }, error -> {
                                 Log.d(MyStrings.VOLLEY, "Error: " + error);
+                                CommunicationController.connectionError(view.getContext(),"Impossibile effettuare operazione");
+
                             });
 
                 }

@@ -1,5 +1,7 @@
 package com.example.progettotreest;
 
+import static com.example.progettotreest.MyStrings.VOLLEY;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,8 +10,12 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         if(sid.equals("")){//first time
-            CommunicationController.register(this, adapter);//pass the adapter to update it at the end of the async call
+            CommunicationController.register(this, response -> handleResponse(response, sharedPref),error -> Log.d(VOLLEY, error.toString()));
         }else if(!sid.equals("") && sharedPref.getInt("did", -1)==-1){//second access BUT did was not set
             Model.getInstance().setSid(sid);
             CommunicationController.retrieveLines(this, adapter);
@@ -57,6 +63,33 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+    }
+
+    private void handleResponse(JSONObject response, SharedPreferences sharedPref) {
+        {
+            try {
+                Log.d(VOLLEY, "Received: " + response.toString());
+                //save the sid to shared preference
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("sid", response.getString("sid"));
+                editor.commit();
+                //set sid to model and retrieve the lines
+                Model.getInstance().setSid(response.getString("sid"));
+                CommunicationController.retrieveLines(this, adapter);
+                CommunicationController.getProfile(this,Model.getInstance().getSid(), res->{
+                    Log.d(VOLLEY, "Received: " + res.toString());
+                    //I want to save into shared preferences the UID
+                    try {
+                        editor.putString("uid", res.getString("uid"));
+                        Model.getInstance().setUid(res.getString("uid"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    editor.commit();
+                },err->Log.d(MyStrings.VOLLEY, err.toString()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }}
     }
 
     @Override

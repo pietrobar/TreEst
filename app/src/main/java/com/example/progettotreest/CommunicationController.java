@@ -35,32 +35,8 @@ public class CommunicationController {
     private static final String SET_PROFILE = "setProfile.php";
 
 
-    public static void register(Context context, LinesAdapter adapter){
-        sendPostRequest(REGISTER,context,new JSONObject(), response -> {
-            try {
-                Log.d(VOLLEY, "Received: " + response.toString());
-                SharedPreferences sharedPref = context.getSharedPreferences(MyStrings.PREFS, 0);
-                //save the sid to shared preference
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("sid", response.getString("sid"));
-                editor.commit();
-                //set sid to model and retrieve the lines
-                Model.getInstance().setSid(response.getString("sid"));
-                CommunicationController.retrieveLines(context, adapter);
-                CommunicationController.getProfile(context,Model.getInstance().getSid(), res->{
-                    Log.d(VOLLEY, "Received: " + res.toString());
-                    //I want to save into shared preferences the UID
-                    try {
-                        editor.putString("uid", res.getString("uid"));
-                        Model.getInstance().setUid(res.getString("uid"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    editor.commit();
-                },err->{Log.d(MyStrings.VOLLEY, err.toString());});
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }},error -> Log.d(VOLLEY, error.toString()));
+    public static void register(Context context,Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+        sendPostRequest(REGISTER,context,new JSONObject(), responseListener, errorListener);
     }
 
     public static void retrieveLines(Context context, LinesAdapter adapter){

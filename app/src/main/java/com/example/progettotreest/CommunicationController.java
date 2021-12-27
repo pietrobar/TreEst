@@ -39,34 +39,8 @@ public class CommunicationController {
         sendPostRequest(REGISTER,context,new JSONObject(), responseListener, errorListener);
     }
 
-    public static void retrieveLines(Context context, LinesAdapter adapter){
-        CommunicationController.getLines(context, Model.getInstance().getSid(),
-                response -> {
-                    Log.d(MyStrings.VOLLEY, "Just received lines " + response.toString());
-                    try {
-
-                        JSONArray linesJson = response.getJSONArray("lines");
-                        for(int i = 0; i < linesJson.length(); i++) {
-                            JSONObject line = linesJson.getJSONObject(i);
-                            JSONObject t1 = line.getJSONObject("terminus1");
-                            JSONObject t2 = line.getJSONObject("terminus2");
-                            Model.getInstance().addLine(new Line(new Terminus(t1.getString("sname"), t1.getInt("did")),
-                                    new Terminus(t2.getString("sname"),t2.getInt("did"))));
-
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    adapter.notifyDataSetChanged();
-                },
-                error -> {
-                    Log.d(MyStrings.VOLLEY, "ERRORE " + error.toString());
-                    //probably error.getClass().getName() = "com.android.volley.NoConnectionError"
-                    connectionError(context,"Problema di connessione");
-
-                });
+    public static void retrieveLines(Context context, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+        CommunicationController.getLines(context, Model.getInstance().getSid(), responseListener, errorListener);
 
     }
 

@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationRequest;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -128,7 +129,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     getUserLocation();
                 } else {
                     Log.d("Location", "Permission still not granted");
-                    //todo: fai un alert grande quanto una casa che dice che non puoi mostrare la posizione
+                    Toast toast=Toast.makeText(this,"Autorizzazione posizione non concessa",Toast.LENGTH_SHORT);
+                    toast.show();
                 }
                 return;
             }

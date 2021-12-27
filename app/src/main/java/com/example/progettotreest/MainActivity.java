@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             CommunicationController.register(this, response -> handleRegisterResponse(response, sharedPref),error -> Log.d(VOLLEY, error.toString()));
         }else if(!sid.equals("") && sharedPref.getInt("did", -1)==-1){//second access BUT did was not set
             Model.getInstance().setSid(sid);
-            CommunicationController.retrieveLines(this, response -> hadleRetrieveLinesResponse(response), error -> handleRetrieveLinesError(error));
+            CommunicationController.getLines(this, Model.getInstance().getSid(), response -> hadleRetrieveLinesResponse(response), error -> handleRetrieveLinesError(error));
         }else {//second time
             //Already registered
             Model.getInstance().setSid(sid);
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.commit();
                 //set sid to model and retrieve the lines
                 Model.getInstance().setSid(response.getString("sid"));
-                CommunicationController.retrieveLines(this, res->hadleRetrieveLinesResponse(res), error -> handleRetrieveLinesError(error));
+                CommunicationController.getLines(this, Model.getInstance().getSid(), res -> hadleRetrieveLinesResponse(res), error -> handleRetrieveLinesError(error));
                 CommunicationController.getProfile(this,Model.getInstance().getSid(), res->{
                     Log.d(VOLLEY, "Received: " + res.toString());
                     //I want to save into shared preferences the UID
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences(MyStrings.PREFS, 0);
         String sid = sharedPref.getString("sid", "");
         if (!sid.equals("") && Model.getInstance().getLinesSize()==0 && sharedPref.getInt("did", -1)!=-1){//the sid is needed because I want to know if it's the first acces
-            CommunicationController.retrieveLines(this, res->hadleRetrieveLinesResponse(res), error -> handleRetrieveLinesError(error));
+            CommunicationController.getLines(this, Model.getInstance().getSid(), response -> hadleRetrieveLinesResponse(response), error -> handleRetrieveLinesError(error));
         }
     }
 

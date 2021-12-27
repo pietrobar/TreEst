@@ -12,6 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class NewPostActivity extends AppCompatActivity {
 
     @Override
@@ -73,7 +79,7 @@ public class NewPostActivity extends AppCompatActivity {
                             commentIT.getText().toString(),
                             response -> {
                                 Log.d(MyStrings.VOLLEY, "Just added a post");
-                                CommunicationController.retrievePosts(this, did, Model.getInstance().getPostAdapter());
+                                CommunicationController.getPosts(this, Model.getInstance().getSid(), did, res -> handleRetrievePostResponse(res), error->handleRetrievePostError(error));
 
                             },
                             error -> {
@@ -101,6 +107,43 @@ public class NewPostActivity extends AppCompatActivity {
 
 
         });
+
+    }
+
+
+    private void handleRetrievePostError(VolleyError error) {
+        Log.d(MyStrings.VOLLEY,"Errore "+error);
+        CommunicationController.connectionError(this,"Problema di connessione");
+
+    }
+
+    private void handleRetrievePostResponse(JSONObject response) {
+        Model.getInstance().clearPosts();
+        Log.d(MyStrings.VOLLEY,"Just Received posts: " + response.toString());
+        JSONArray postsJson = null;
+        try {
+            postsJson = response.getJSONArray("posts");
+            for(int i = 0; i < postsJson.length(); i++) {
+                JSONObject post = postsJson.getJSONObject(i);
+
+                String datetime =  post.getString("datetime");
+                String subDate = datetime.substring(0,datetime.indexOf("."));
+                Model.getInstance().addPost(new Post(
+                        post.has("delay")?post.getInt("delay"):-1,
+                        post.has("status")?post.getInt("status"):-1,
+                        post.has("comment")?post.getString("comment"):"No Comment",
+                        post.getBoolean("followingAuthor"),
+                        subDate,
+                        post.getString("authorName"),
+                        post.getInt("pversion"),
+                        post.getInt("author")));
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Model.getInstance().sortPosts();
+        Model.getInstance().getPostAdapter().notifyDataSetChanged();
 
     }
 

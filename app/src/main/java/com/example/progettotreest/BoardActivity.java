@@ -7,7 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+
+import com.android.volley.VolleyError;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class BoardActivity extends AppCompatActivity {
 
@@ -33,10 +40,10 @@ public class BoardActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         Model.getInstance().setPostAdapter(adapter);
-        this.adapter= adapter;
+        this.adapter=adapter;
         this.did=did;
 
-        CommunicationController.retrievePosts(this, did, adapter);
+        CommunicationController.getPosts(this, Model.getInstance().getSid(), did, response -> handleRetrievePostResponse(response), error->handleRetrievePostError(error));
 
 
 
@@ -59,7 +66,7 @@ public class BoardActivity extends AppCompatActivity {
             editor.putInt("did",newDid);
             editor.commit();
             this.did=newDid;
-            CommunicationController.retrievePosts(this, newDid, adapter);
+            CommunicationController.getPosts(this, Model.getInstance().getSid(), newDid, response -> handleRetrievePostResponse(response), error->handleRetrievePostError(error));
         });
 
         findViewById(R.id.details_btn).setOnClickListener(v ->{
@@ -75,12 +82,48 @@ public class BoardActivity extends AppCompatActivity {
 
     }
 
+    private void handleRetrievePostError(VolleyError error) {
+        Log.d(MyStrings.VOLLEY,"Errore "+error);
+        CommunicationController.connectionError(this,"Problema di connessione");
+
+    }
+
+    private void handleRetrievePostResponse(JSONObject response) {
+        Model.getInstance().clearPosts();
+        Log.d(MyStrings.VOLLEY,"Just Received posts: " + response.toString());
+        JSONArray postsJson = null;
+        try {
+            postsJson = response.getJSONArray("posts");
+            for(int i = 0; i < postsJson.length(); i++) {
+                JSONObject post = postsJson.getJSONObject(i);
+
+                String datetime =  post.getString("datetime");
+                String subDate = datetime.substring(0,datetime.indexOf("."));
+                Model.getInstance().addPost(new Post(
+                        post.has("delay")?post.getInt("delay"):-1,
+                        post.has("status")?post.getInt("status"):-1,
+                        post.has("comment")?post.getString("comment"):"No Comment",
+                        post.getBoolean("followingAuthor"),
+                        subDate,
+                        post.getString("authorName"),
+                        post.getInt("pversion"),
+                        post.getInt("author")));
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Model.getInstance().sortPosts();
+        adapter.notifyDataSetChanged();
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         //I want to update the posts content whenever i get back from another activity
         if (this.adapter!=null && this.did!=-1)
-            CommunicationController.retrievePosts(this, this.did, this.adapter);
+            CommunicationController.getPosts(this, Model.getInstance().getSid(), this.did, response -> handleRetrievePostResponse(response), error->handleRetrievePostError(error));
 
     }
 }

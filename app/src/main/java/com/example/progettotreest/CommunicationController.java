@@ -39,8 +39,14 @@ public class CommunicationController {
         sendPostRequest(REGISTER,context,new JSONObject(), responseListener, errorListener);
     }
 
-    public static void retrieveLines(Context context, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
-        CommunicationController.getLines(context, Model.getInstance().getSid(), responseListener, errorListener);
+    public static void getLines(Context context, String sid,Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
+        final JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("sid", sid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sendPostRequest(GET_LINES, context,jsonBody,responseListener,errorListener);
 
     }
 
@@ -49,42 +55,6 @@ public class CommunicationController {
         toast.show();
     }
 
-    public static void retrievePosts(Context context, int did, PostsAdapter adapter) {
-        Model.getInstance().clearPosts();
-        CommunicationController.getPosts(context, Model.getInstance().getSid(), did,
-                response->{
-                    Log.d(MyStrings.VOLLEY,"Just Received posts: " + response.toString());
-                    JSONArray postsJson = null;
-                    try {
-                        postsJson = response.getJSONArray("posts");
-                        for(int i = 0; i < postsJson.length(); i++) {
-                            JSONObject post = postsJson.getJSONObject(i);
-
-                            String datetime =  post.getString("datetime");
-                            String subDate = datetime.substring(0,datetime.indexOf("."));
-                            Model.getInstance().addPost(new Post(
-                                    post.has("delay")?post.getInt("delay"):-1,
-                                    post.has("status")?post.getInt("status"):-1,
-                                    post.has("comment")?post.getString("comment"):"No Comment",
-                                    post.getBoolean("followingAuthor"),
-                                    subDate,
-                                    post.getString("authorName"),
-                                    post.getInt("pversion"),
-                                    post.getInt("author")));
-
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Model.getInstance().sortPosts();
-                    adapter.notifyDataSetChanged();
-
-                },
-                error->{
-                    Log.d(MyStrings.VOLLEY,"Errore "+error);
-                    connectionError(context,"Problema di connessione");
-                });
-    }
 
     public static void getProfile(Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         final JSONObject jsonBody = new JSONObject();
@@ -112,15 +82,7 @@ public class CommunicationController {
 
 
 
-    public static void getLines(Context context, String sid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
-        final JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("sid", sid);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        sendPostRequest(GET_LINES, context,jsonBody,responseListener,errorListener);
-    }
+
 
     public static void follow(Context context, String sid, int uid, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener){
         final JSONObject jsonBody = new JSONObject();

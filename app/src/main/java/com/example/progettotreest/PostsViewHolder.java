@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,8 +52,6 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         datetimeTV = itemView.findViewById(R.id.datetime_textView);
         followUnfollowBtn = itemView.findViewById(R.id.follow_unfolllow_btn);
         profilePic = itemView.findViewById(R.id.post_profilePic);
-        delayInd.setClickable(false);
-        statusInd.setClickable(false);
 
         colorMap.put(-1,Color.GRAY);
         colorMap.put(0,Color.GREEN);
@@ -74,7 +73,45 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
 
     }
 
+    private void mapDelay(int i){
+
+        if(i==-1)
+            showDialog("Non ci sono informazioni");
+        else if (i==0)
+            showDialog("In orario");
+        else if (i==1)
+            showDialog("In ritardo di pochi minuti");
+        else if (i==2)
+            showDialog("In ritardo di oltre 15 minuti");
+        else if (i==3)
+            showDialog("Treni soppressi");
+
+
+    }
+
+    private void mapStatus(int i){
+        if (i==-1)
+            showDialog("Non ci sono informazioni");
+        else if (i==0)
+            showDialog("Situazione ideale");
+        else if (i==1)
+            showDialog("Situazione accettabile");
+        else if (i==2)
+            showDialog("Gravi problemi per i passeggeri");
+    }
+
+    private void showDialog(String title) {
+        new AlertDialog.Builder(view.getContext())
+                .setTitle(title)
+                .setNegativeButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
+
+
     public void updateContent(Post post) {
+        delayInd.setOnClickListener(v -> mapDelay(post.getDelay()));
+        statusInd.setOnClickListener(v -> mapStatus(post.getStatus()));
 
         postAuthorTV.setText(post.getAuthorName());
         delayInd.setBackgroundColor(colorMap.get(post.getDelay()));

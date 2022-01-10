@@ -72,34 +72,27 @@ public class NewPostActivity extends AppCompatActivity {
 
         findViewById(R.id.publish_btn).setOnClickListener(v -> {
             if(delayInfo[0]!=-1 || statusInfo[0]!=-1 || commentIT.getText().length()!=0){
-                if (commentIT.getText().length()<100){
-                    CommunicationController.addPost(this, Model.getInstance().getSid(),did,
-                            delayInfo[0],
-                            statusInfo[0],
-                            commentIT.getText().toString(),
-                            response -> {
-                                Log.d(MyStrings.VOLLEY, "Just added a post");
-                                CommunicationController.getPosts(this, Model.getInstance().getSid(), did, res -> handleRetrievePostResponse(res), error->handleRetrievePostError(error));
 
-                            },
-                            error -> {
-                                Log.d(MyStrings.VOLLEY, error.toString());
-                                CommunicationController.connectionError(this,"Impossibile effettuare operazione");
+                CommunicationController.addPost(this, Model.getInstance().getSid(),did,
+                        delayInfo[0],
+                        statusInfo[0],
+                        commentIT.getText().toString(),
+                        response -> {
+                            Log.d(MyStrings.VOLLEY, "Just added a post");
+                            CommunicationController.getPosts(this, Model.getInstance().getSid(), did, res -> handleRetrievePostResponse(res), error->handleRetrievePostError(error));
 
-                            });
+                        },
+                        error -> {
+                            Log.d(MyStrings.VOLLEY, error.toString());
+                            CommunicationController.connectionError(this,"Impossibile effettuare operazione");
 
-                    super.onBackPressed();
-                }else{
-                    new AlertDialog.Builder(this)
-                            .setTitle("Il commento è troppo lungo")
-                            .setMessage("Scrivi un commento di massimo 100 caratteri")
-                            .setNegativeButton(android.R.string.ok, null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-                }
+                        });
+
+                super.onBackPressed();
+
             }else {
                 new AlertDialog.Builder(this)
-                        .setTitle("Non è possibile pubblicare un commento vuoto")
+                        .setTitle("Non è possibile pubblicare un post vuoto")
                         .setNegativeButton(android.R.string.ok, null)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();

@@ -43,7 +43,8 @@
         android:layout_marginEnd="100dp"
         app:counterEnabled="true"
         app:counterMaxLength="20"
-
+        app:boxStrokeColor="#3F51B5"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePictureView">

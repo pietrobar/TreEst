@@ -8,8 +8,8 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="399dp"
-        android:layout_height="179dp"
+        android:layout_width="296dp"
+        android:layout_height="189dp"
         android:layout_marginStart="6dp"
         android:layout_marginTop="42dp"
         android:layout_marginEnd="7dp"
@@ -17,7 +17,10 @@
         app:counterMaxLength="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_input_text">
+        app:layout_constraintTop_toBottomOf="@+id/status_input_text"
+        app:boxStrokeColor="#3F51B5"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
 
         <EditText
             android:id="@+id/comment_input_text"
@@ -26,8 +29,8 @@
             android:ems="10"
             android:hint="Commento"
             android:inputType="textMultiLine"
-            android:minHeight="48dp"
             android:maxLength="100"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.509"
             app:layout_constraintStart_toStartOf="parent"

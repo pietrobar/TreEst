@@ -14,9 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
 
@@ -101,7 +102,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     }
 
     private void showDialog(String title) {
-        new AlertDialog.Builder(view.getContext())
+        new MaterialAlertDialogBuilder(view.getContext())
                 .setTitle(title)
                 .setNegativeButton(android.R.string.ok, null)
                 .setIcon(android.R.drawable.ic_dialog_info)

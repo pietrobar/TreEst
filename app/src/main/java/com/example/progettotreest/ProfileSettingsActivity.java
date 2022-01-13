@@ -2,25 +2,23 @@ package com.example.progettotreest;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.List;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
     private String newImage = null;
@@ -55,10 +53,9 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
                         newImage=Base64.encodeToString(byteArray, Base64.DEFAULT);
                         if (newImage.length()>137000 || selectedImage.getHeight()!=selectedImage.getWidth()){
-                            new AlertDialog.Builder(this)
+                            new MaterialAlertDialogBuilder(this)
                                     .setTitle("L'immagine è troppo grande o non è quadrata")
                                     .setNegativeButton(android.R.string.ok, null)
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
                                     .show();
                         }else {
                             showSelectedImage(selectedImage);

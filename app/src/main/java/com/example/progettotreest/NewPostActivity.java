@@ -1,6 +1,5 @@
 package com.example.progettotreest;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,10 +91,9 @@ public class NewPostActivity extends AppCompatActivity {
                 super.onBackPressed();
 
             }else {
-                new AlertDialog.Builder(this)
+                new MaterialAlertDialogBuilder(this)
                         .setTitle("Non è possibile pubblicare un post vuoto")
-                        .setNegativeButton(android.R.string.ok, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.ok,null)
                         .show();
             }
 

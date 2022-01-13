@@ -102,7 +102,7 @@ public class BoardActivity extends AppCompatActivity {
                 Model.getInstance().addPost(new Post(
                         post.has("delay")?post.getInt("delay"):-1,
                         post.has("status")?post.getInt("status"):-1,
-                        post.has("comment")?post.getString("comment"):"No Comment",
+                        post.has("comment")?post.getString("comment"):"",
                         post.getBoolean("followingAuthor"),
                         subDate,
                         post.getString("authorName"),

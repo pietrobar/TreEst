@@ -45,10 +45,29 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         if(sid.equals("")){//first time
-            CommunicationController.register(this, response -> handleRegisterResponse(response, sharedPref),error -> Log.d(VOLLEY, error.toString()));
+            LoadingDialog dialog = new LoadingDialog(this);
+            dialog.startLoadingDialog();
+            CommunicationController.register(this,
+                    response -> {
+                        handleRegisterResponse(response, sharedPref);
+                        dialog.dismissLoadingDialog();
+                    },
+                    error -> {
+                        Log.d(VOLLEY, error.toString());
+                        CommunicationController.connectionError(this,"Problemi di rete");
+                    }
+            );
         }else if(!sid.equals("") && sharedPref.getInt("did", -1)==-1){//second access BUT did was not set
             Model.getInstance().setSid(sid);
-            CommunicationController.getLines(this, Model.getInstance().getSid(), response -> hadleRetrieveLinesResponse(response), error -> handleRetrieveLinesError(error));
+            LoadingDialog dialog = new LoadingDialog(this);
+            dialog.startLoadingDialog();
+            CommunicationController.getLines(this, Model.getInstance().getSid(),
+                    response -> {
+                        hadleRetrieveLinesResponse(response);
+                        dialog.dismissLoadingDialog();
+                    }, error -> {
+                        handleRetrieveLinesError(error);
+                    });
         }else {//second time
             //Already registered
             Model.getInstance().setSid(sid);
@@ -133,7 +152,13 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences(MyStrings.PREFS, 0);
         String sid = sharedPref.getString("sid", "");
         if (!sid.equals("") && Model.getInstance().getLinesSize()==0 && sharedPref.getInt("did", -1)!=-1){//the sid is needed because I want to know if it's the first acces
-            CommunicationController.getLines(this, Model.getInstance().getSid(), response -> hadleRetrieveLinesResponse(response), error -> handleRetrieveLinesError(error));
+            LoadingDialog loadingDialog = new LoadingDialog(this);
+            loadingDialog.startLoadingDialog();
+            CommunicationController.getLines(this, Model.getInstance().getSid(),
+                    response -> {
+                        hadleRetrieveLinesResponse(response);
+                        loadingDialog.dismissLoadingDialog();
+                    }, error -> handleRetrieveLinesError(error));
         }
     }
 

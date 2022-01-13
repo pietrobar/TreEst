@@ -91,7 +91,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap=googleMap;
         //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.464211,9.191383), 12f));
-
+        LoadingDialog loadingDialog = new LoadingDialog(this);
+        loadingDialog.startLoadingDialog();
         CommunicationController.getStations(this, Model.getInstance().getSid(), did, response -> {
            Log.d(MyStrings.VOLLEY, "Stazioni: "+response.toString());
             try {
@@ -110,6 +111,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 googleMap.addPolyline(polylineOptions);
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+            finally {
+                loadingDialog.dismissLoadingDialog();
             }
         }, error -> {
             Log.d(MyStrings.VOLLEY, error.toString());

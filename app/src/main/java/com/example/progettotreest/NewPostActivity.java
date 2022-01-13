@@ -79,7 +79,13 @@ public class NewPostActivity extends AppCompatActivity {
                         commentIT.getText().toString(),
                         response -> {
                             Log.d(MyStrings.VOLLEY, "Just added a post");
-                            CommunicationController.getPosts(this, Model.getInstance().getSid(), did, res -> handleRetrievePostResponse(res), error->handleRetrievePostError(error));
+                            LoadingDialog loadingDialog =new LoadingDialog(this);
+                            loadingDialog.startLoadingDialog();
+                            CommunicationController.getPosts(this, Model.getInstance().getSid(), did,
+                                    res -> {
+                                        handleRetrievePostResponse(res);
+                                        loadingDialog.startLoadingDialog();
+                                    }, error->handleRetrievePostError(error));
                             super.onBackPressed();
 
                         },

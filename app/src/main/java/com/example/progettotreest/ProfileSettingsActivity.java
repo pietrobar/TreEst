@@ -106,6 +106,8 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
     private void loadProfileInfo() {
         //get info from server
+        LoadingDialog loadingDialog = new LoadingDialog(this);
+        loadingDialog.startLoadingDialog();
         CommunicationController.getProfile(this,Model.getInstance().getSid(), response ->{
             Log.d(MyStrings.VOLLEY, response.toString());
             try {
@@ -121,6 +123,8 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
             } catch (JSONException e) {
                 e.printStackTrace();
+            }finally {
+                loadingDialog.dismissLoadingDialog();
             }
         }, error -> {
             Log.d(MyStrings.VOLLEY, error.toString());

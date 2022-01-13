@@ -43,7 +43,13 @@ public class BoardActivity extends AppCompatActivity {
         this.adapter=adapter;
         this.did=did;
 
-        CommunicationController.getPosts(this, Model.getInstance().getSid(), did, response -> handleRetrievePostResponse(response), error->handleRetrievePostError(error));
+        LoadingDialog loadingDialog = new LoadingDialog(this);
+        loadingDialog.startLoadingDialog();
+        CommunicationController.getPosts(this, Model.getInstance().getSid(), did,
+                response -> {
+                    handleRetrievePostResponse(response);
+                    loadingDialog.dismissLoadingDialog();
+                }, error->handleRetrievePostError(error));
 
 
 
@@ -66,7 +72,12 @@ public class BoardActivity extends AppCompatActivity {
             editor.putInt("did",newDid);
             editor.commit();
             this.did=newDid;
-            CommunicationController.getPosts(this, Model.getInstance().getSid(), newDid, response -> handleRetrievePostResponse(response), error->handleRetrievePostError(error));
+            loadingDialog.startLoadingDialog();
+            CommunicationController.getPosts(this, Model.getInstance().getSid(), newDid,
+                    response -> {
+                        handleRetrievePostResponse(response);
+                        loadingDialog.dismissLoadingDialog();
+                    }, error->handleRetrievePostError(error));
         });
 
         findViewById(R.id.details_btn).setOnClickListener(v ->{
@@ -122,8 +133,16 @@ public class BoardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //I want to update the posts content whenever i get back from another activity
-        if (this.adapter!=null && this.did!=-1)
-            CommunicationController.getPosts(this, Model.getInstance().getSid(), this.did, response -> handleRetrievePostResponse(response), error->handleRetrievePostError(error));
+        if (this.adapter!=null && this.did!=-1){
+            LoadingDialog loadingDialog = new LoadingDialog(this);
+            loadingDialog.startLoadingDialog();
+            CommunicationController.getPosts(this, Model.getInstance().getSid(), this.did,
+                    response -> {
+                        handleRetrievePostResponse(response);
+                        loadingDialog.dismissLoadingDialog();
+                    }, error->handleRetrievePostError(error));
+
+        }
 
     }
 }

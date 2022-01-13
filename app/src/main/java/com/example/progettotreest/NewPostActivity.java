@@ -80,15 +80,21 @@ public class NewPostActivity extends AppCompatActivity {
                         response -> {
                             Log.d(MyStrings.VOLLEY, "Just added a post");
                             CommunicationController.getPosts(this, Model.getInstance().getSid(), did, res -> handleRetrievePostResponse(res), error->handleRetrievePostError(error));
+                            super.onBackPressed();
 
                         },
                         error -> {
                             Log.d(MyStrings.VOLLEY, error.toString());
-                            CommunicationController.connectionError(this,"Impossibile effettuare operazione");
-
+                            new MaterialAlertDialogBuilder(this)
+                                    .setTitle("Problemi di rete")
+                                    .setMessage("Impossibile effettuare operazione")
+                                    .setNegativeButton(android.R.string.ok, null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .setOnDismissListener(fun->super.onBackPressed())
+                                    .show();
                         });
 
-                super.onBackPressed();
+
 
             }else {
                 new MaterialAlertDialogBuilder(this)

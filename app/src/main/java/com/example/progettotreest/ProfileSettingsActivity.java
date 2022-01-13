@@ -76,23 +76,25 @@ public class ProfileSettingsActivity extends AppCompatActivity {
 
         findViewById(R.id.save_profile_settings_btn).setOnClickListener(v -> {
 
-            if (newImage!=null) {
-                Log.d(MyStrings.PROVA, "image changed ");
-            }
-
             EditText et = findViewById(R.id.editName);
             String newName = et.getText().toString();
-            if (!oldName.equals(newName)){//the name has changed
-                Log.d(MyStrings.PROVA, "name changed: "+newName);
 
-            }
-
-            CommunicationController.setProfile(this, Model.getInstance().getSid(), newImage, newName,response -> Log.d(MyStrings.VOLLEY,"aaa " + response.toString()),
+            CommunicationController.setProfile(this, Model.getInstance().getSid(), newImage, newName,
+                    response -> {
+                        Log.d(MyStrings.VOLLEY,"aaa " + response.toString());
+                        super.onBackPressed();
+                    },
                     error -> {
                         Log.d(MyStrings.VOLLEY,error.toString());
-                        CommunicationController.connectionError(this, "Impossibile effettuare operazione");
+                        new MaterialAlertDialogBuilder(this)
+                                .setTitle("Problemi di rete")
+                                .setTitle("Impossibile effettuare operazione")
+                                .setNegativeButton(android.R.string.ok, null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setOnDismissListener(fun->super.onBackPressed())
+                                .show();
                     });
-            super.onBackPressed();
+
 
 
 

@@ -23,13 +23,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_posts"
         android:layout_width="match_parent"
-        android:layout_height="424dp"
-        android:layout_marginTop="120dp"
+        android:layout_height="512dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/details_btn"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
@@ -50,32 +49,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="1dp"
         android:backgroundTint="#3F51B5"
         android:text="Dettagli"
         app:cornerRadius="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/new_post_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView_posts" />
-
-    <Button
-        android:id="@+id/new_post_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#3F51B5"
-        android:text="Nuovo post"
-        app:cornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/switch_line_btn" />
 
     <TextView
         android:id="@+id/from"
@@ -94,9 +76,10 @@
         android:id="@+id/switch_line_btn"
         android:layout_width="60dp"
         android:layout_height="51dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView_posts"
         app:layout_constraintEnd_toStartOf="@+id/to"
         app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView"
         app:srcCompat="@drawable/switch_line"
@@ -113,5 +96,21 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/treEstTitleTextView" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/floatingActionButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="436dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:text="Post"
+        android:textColor="@color/white"
+        app:backgroundTint="#3F51B5"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recyclerView_posts"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

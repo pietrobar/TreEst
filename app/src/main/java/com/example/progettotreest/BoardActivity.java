@@ -48,7 +48,7 @@ public class BoardActivity extends AppCompatActivity {
 
 
         //DEFINE BUTTONS LISTENERS
-        findViewById(R.id.new_post_btn).setOnClickListener(v -> {
+        findViewById(R.id.floatingActionButton3).setOnClickListener(v -> {
             Intent intent = new Intent(this, NewPostActivity.class);
             intent.putExtra("did", this.did);
             startActivity(intent);

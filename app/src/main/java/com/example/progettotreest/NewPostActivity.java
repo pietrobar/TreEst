@@ -99,7 +99,6 @@ public class NewPostActivity extends AppCompatActivity {
                                     .setMessage("Impossibile effettuare operazione")
                                     .setNegativeButton(android.R.string.ok, null)
                                     .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .setOnDismissListener(fun->super.onBackPressed())
                                     .show();
                         });
 

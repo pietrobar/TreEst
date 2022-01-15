@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     },
                     error -> {
                         Log.d(VOLLEY, error.toString());
+                        dialog.dismissLoadingDialog();
                         CommunicationController.connectionError(this,"Problemi di rete");
                     }
             );
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         dialog.dismissLoadingDialog();
                     }, error -> {
                         handleRetrieveLinesError(error);
+                        dialog.dismissLoadingDialog();
                     });
         }else {//second time
             //Already registered
@@ -158,7 +160,10 @@ public class MainActivity extends AppCompatActivity {
                     response -> {
                         hadleRetrieveLinesResponse(response);
                         loadingDialog.dismissLoadingDialog();
-                    }, error -> handleRetrieveLinesError(error));
+                    }, error -> {
+                        handleRetrieveLinesError(error);
+                        loadingDialog.dismissLoadingDialog();
+                    });
         }
     }
 

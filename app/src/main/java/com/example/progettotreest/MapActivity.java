@@ -117,6 +117,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         }, error -> {
             Log.d(MyStrings.VOLLEY, error.toString());
+            loadingDialog.dismissLoadingDialog();
             CommunicationController.connectionError(this,"Problema di connessione");
         });
 

@@ -22,7 +22,6 @@ import java.io.InputStream;
 
 public class ProfileSettingsActivity extends AppCompatActivity {
     private String newImage = null;
-    private String oldName = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +112,6 @@ public class ProfileSettingsActivity extends AppCompatActivity {
             try {
                 EditText et = findViewById(R.id.editName);
                 et.setText(response.getString("name"));
-                oldName = et.getText().toString();
                 String picBase64 = response.getString("picture");
                 if (!picBase64.equals("null")){
                     byte[] decodedString = Base64.decode(picBase64, Base64.DEFAULT);
@@ -128,6 +126,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
             }
         }, error -> {
             Log.d(MyStrings.VOLLEY, error.toString());
+            loadingDialog.dismissLoadingDialog();
             CommunicationController.connectionError(this,"Problema di connessione");
         });
     }

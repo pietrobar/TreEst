@@ -85,7 +85,10 @@ public class NewPostActivity extends AppCompatActivity {
                                     res -> {
                                         handleRetrievePostResponse(res);
                                         loadingDialog.startLoadingDialog();
-                                    }, error->handleRetrievePostError(error));
+                                    }, error->{
+                                        handleRetrievePostError(error);
+                                        loadingDialog.dismissLoadingDialog();
+                                    });
                             super.onBackPressed();
 
                         },

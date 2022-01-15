@@ -49,7 +49,10 @@ public class BoardActivity extends AppCompatActivity {
                 response -> {
                     handleRetrievePostResponse(response);
                     loadingDialog.dismissLoadingDialog();
-                }, error->handleRetrievePostError(error));
+                }, error->{
+                    handleRetrievePostError(error);
+                    loadingDialog.dismissLoadingDialog();
+                });
 
 
 
@@ -140,7 +143,10 @@ public class BoardActivity extends AppCompatActivity {
                     response -> {
                         handleRetrievePostResponse(response);
                         loadingDialog.dismissLoadingDialog();
-                    }, error->handleRetrievePostError(error));
+                    }, error->{
+                        handleRetrievePostError(error);
+                        loadingDialog.dismissLoadingDialog();
+                    });
 
         }
 

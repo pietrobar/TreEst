@@ -35,30 +35,38 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 uri -> {
                     // Handle the returned Uri
                     if (uri!=null){
-                        Log.d(MyStrings.PROVA,"URI: "+uri.toString());
+                        try{
+                            Log.d(MyStrings.PROVA,"URI: "+uri.toString());
 
-                        InputStream imageStream=null;
-                        try {
-                            imageStream = getContentResolver().openInputStream(uri);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                            InputStream imageStream=null;
+                            try {
+                                imageStream = getContentResolver().openInputStream(uri);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
 
 
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        selectedImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            selectedImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                            byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-                        newImage=Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        if (newImage.length()>137000 || selectedImage.getHeight()!=selectedImage.getWidth()){
+                            newImage=Base64.encodeToString(byteArray, Base64.DEFAULT);
+                            if (newImage.length()>137000 || selectedImage.getHeight()!=selectedImage.getWidth()){
+                                new MaterialAlertDialogBuilder(this)
+                                        .setTitle("L'immagine è troppo grande o non è quadrata")
+                                        .setNegativeButton(android.R.string.ok, null)
+                                        .show();
+                            }else {
+                                showSelectedImage(selectedImage);
+                            }
+                        }catch (Exception e){
                             new MaterialAlertDialogBuilder(this)
-                                    .setTitle("L'immagine è troppo grande o non è quadrata")
+                                    .setTitle("Immagine non supportata")
                                     .setNegativeButton(android.R.string.ok, null)
                                     .show();
-                        }else {
-                            showSelectedImage(selectedImage);
                         }
+
                     }
 
                     else
@@ -114,9 +122,18 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 et.setText(response.getString("name"));
                 String picBase64 = response.getString("picture");
                 if (!picBase64.equals("null")){
-                    byte[] decodedString = Base64.decode(picBase64, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    showSelectedImage(decodedByte);
+                    byte[] decodedString=null;
+                    try{
+                        decodedString = Base64.decode(picBase64, Base64.DEFAULT);
+                    }catch (Exception e){
+                        //image not valid
+                        Log.d(MyStrings.VOLLEY, "Image not valid "+e);
+                    }
+                    if(decodedString!=null){
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        showSelectedImage(decodedByte);
+                    }
+
                 }
 
             } catch (JSONException e) {

@@ -223,10 +223,19 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
 
     private void setBase64Pic(String picture) {
         if (picture!=null && picture.length()>100){
-            byte[] decodedString = Base64.decode(picture, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            if(profilePic!=null)
-                profilePic.setImageBitmap(decodedByte);
+            byte[] decodedString=null;
+            try{
+                 decodedString = Base64.decode(picture, Base64.DEFAULT);
+            }catch (Exception e){
+                //image not valid
+                Log.d(MyStrings.VOLLEY, "Image not valid "+e);
+            }
+            if(decodedString!=null){
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                if(profilePic!=null)
+                    profilePic.setImageBitmap(decodedByte);
+            }
+
         }
 
     }

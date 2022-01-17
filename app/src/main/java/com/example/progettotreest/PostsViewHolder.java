@@ -41,7 +41,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
     private String uid;
 
 
-    Database db;
+
     private View view;
 
     public PostsViewHolder(View itemView, PostsAdapter adapter) {
@@ -60,7 +60,6 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         colorMap.put(2,Color.RED);
         colorMap.put(3,Color.BLACK);
 
-        db = Model.getInstance().getDB();
         this.view=itemView;
         this.adapter=adapter;
 
@@ -126,11 +125,8 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         profilePic.setImageDrawable(placeholder);
         new Thread(() -> {
             //to don't always retrieve users from db
-            List<User> users = Model.getInstance().getUsers();
-            if (users==null){
-                users = db.getDao().getAll();
-                Model.getInstance().setUsers(users);
-            }
+            List<User> users = Model.getInstance().getDB().getDao().getAll();
+
             List<User> finalUsers = users;
             view.post(()->{
                 if (finalUsers.size()!=0){
@@ -141,11 +137,11 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
                         if (dbUser.getPversion() < post.getPversion()) {
                             //if the picVersion is less recent than the one on the server => download most recent
                             retrieveImageFromServer(post);
-
-                        } else {
+                            Log.d(MyStrings.DB, "retrieve picture from internet for post"+post );
+                        } else if(post.getPversion()>0){
                             //if I have the most recent image I can set it
                             setBase64Pic(dbUser.getPicture());
-                            Log.d(MyStrings.DB, "set pricture from database");
+                            Log.d(MyStrings.DB, "set picture from database for post"+post );
                         }
                     }else {
                         retrieveImageFromServer(post);
@@ -215,14 +211,14 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
 
     public void saveToDB( User user) {
         new Thread(() -> {
-            db.getDao().insert(user);
+            Model.getInstance().getDB().getDao().insert(user);
         }).start();
 
 
     }
 
     private void setBase64Pic(String picture) {
-        if (picture!=null && picture.length()>100){
+        if (picture!=null && !picture.equals("null")){
             byte[] decodedString=null;
             try{
                  decodedString = Base64.decode(picture, Base64.DEFAULT);
@@ -232,8 +228,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
             }
             if(decodedString!=null){
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                if(profilePic!=null)
-                    profilePic.setImageBitmap(decodedByte);
+                profilePic.setImageBitmap(decodedByte);
             }
 
         }

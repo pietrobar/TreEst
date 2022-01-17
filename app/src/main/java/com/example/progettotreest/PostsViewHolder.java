@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -119,6 +120,11 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         commentTV.setText(post.getComment());
         datetimeTV.setText(post.getDatetime());
 
+        //reset color
+        CardView cardView = view.findViewById(R.id.card_view);
+        cardView.setCardBackgroundColor(Color.WHITE);
+
+
         //I have to set the placeholder, otherwise the viewholder will set the same image of the recycled component
         Resources res = view.getContext().getResources();
         Drawable placeholder = ResourcesCompat.getDrawable(res, R.drawable.profile_btn_img,null);
@@ -161,6 +167,9 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
             followUnfollowBtn.setVisibility(View.VISIBLE);
             if (post.isFollowingAuthor()){
                 followUnfollowBtn.setImageResource(R.drawable.unfollow);
+                //change color of post by followers
+
+                cardView.setCardBackgroundColor(0xFFB2B8DB);
             }else {
                 followUnfollowBtn.setImageResource(R.drawable.follow);
             }

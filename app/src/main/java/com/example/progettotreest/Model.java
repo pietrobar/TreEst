@@ -100,10 +100,10 @@ public class Model {
         this.posts.add(post);
     }
 
-    public void sortPosts() {
+    /*public void sortPosts() {
         Collections.sort(posts, (o1, o2) -> Boolean.compare(!o1.isFollowingAuthor(),!o2.isFollowingAuthor()));
 
-    }
+    }*/
 
     public PostsAdapter getPostAdapter() {
         return this.postAdapter;

@@ -127,7 +127,7 @@ public class BoardActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Model.getInstance().sortPosts();
+        //Model.getInstance().sortPosts();
         adapter.notifyDataSetChanged();
 
     }

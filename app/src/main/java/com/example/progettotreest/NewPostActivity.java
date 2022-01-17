@@ -148,7 +148,7 @@ public class NewPostActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Model.getInstance().sortPosts();
+        //Model.getInstance().sortPosts();
         Model.getInstance().getPostAdapter().notifyDataSetChanged();
 
     }

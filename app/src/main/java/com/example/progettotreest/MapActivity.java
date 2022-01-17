@@ -51,7 +51,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         did = getIntent().getIntExtra("did", -1);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        checkLocationPermission();
 
 
 
@@ -80,7 +79,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 12f));
                             this.googleMap.setMyLocationEnabled(true);
                         }
-                        //todo: se finisce prima che sia pronta la mappa questo non funziona
                     } else {
                         Log.d("Location", "Current location not available");
                     } });
@@ -120,6 +118,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             loadingDialog.dismissLoadingDialog();
             CommunicationController.connectionError(this,"Problema di connessione");
         });
+        checkLocationPermission();
+
 
     }
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

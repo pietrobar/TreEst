@@ -70,6 +70,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
             //get UID from sharedPref
             SharedPreferences sharedPref = view.getContext().getSharedPreferences(MyStrings.PREFS, 0);
             this.uid = sharedPref.getString("uid", "");
+            Model.getInstance().setUid(this.uid);
         }
 
     }
@@ -129,35 +130,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
         Resources res = view.getContext().getResources();
         Drawable placeholder = ResourcesCompat.getDrawable(res, R.drawable.profile_btn_img,null);
         profilePic.setImageDrawable(placeholder);
-        new Thread(() -> {
-            //to don't always retrieve users from db
-            List<User> users = Model.getInstance().getDB().getDao().getAll();
-
-            List<User> finalUsers = users;
-            view.post(()->{
-                if (finalUsers.size()!=0){
-                    //there is either one user with the same uid or none
-                    List<User> userSameUid= finalUsers.stream().filter(user -> user.getUid()==post.getAuthor()).collect(Collectors.toList());
-                    User dbUser = userSameUid.size()!=0 ? userSameUid.get(0) : null;
-                    if (dbUser !=null) {
-                        if (dbUser.getPversion() < post.getPversion()) {
-                            //if the picVersion is less recent than the one on the server => download most recent
-                            retrieveImageFromServer(post);
-                            Log.d(MyStrings.DB, "retrieve picture from internet for post"+post );
-                        } else if(post.getPversion()>0){
-                            //if I have the most recent image I can set it
-                            setBase64Pic(dbUser.getPicture());
-                            Log.d(MyStrings.DB, "set picture from database for post"+post );
-                        }
-                    }else {
-                        retrieveImageFromServer(post);
-                    }
-                }else {
-                    retrieveImageFromServer(post);
-                }
-
-            });
-        }).start();
+        loadImage(post);
 
 
         if(Integer.parseInt(this.uid)==post.getAuthor()){
@@ -202,6 +175,38 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
             });
         }
 
+    }
+
+    private void loadImage(Post post) {
+        new Thread(() -> {
+            //to don't always retrieve users from db
+            List<User> users = Model.getInstance().getDB().getDao().getAll();
+
+            List<User> finalUsers = users;
+            view.post(()->{
+                if (finalUsers.size()!=0){
+                    //there is either one user with the same uid or none
+                    List<User> userSameUid= finalUsers.stream().filter(user -> user.getUid()== post.getAuthor()).collect(Collectors.toList());
+                    User dbUser = userSameUid.size()!=0 ? userSameUid.get(0) : null;
+                    if (dbUser !=null) {
+                        if (dbUser.getPversion() < post.getPversion()) {
+                            //if the picVersion is less recent than the one on the server => download most recent
+                            retrieveImageFromServer(post);
+                            Log.d(MyStrings.DB, "retrieve picture from internet for post"+ post);
+                        } else if(post.getPversion()>0){
+                            //if I have the most recent image I can set it
+                            setBase64Pic(dbUser.getPicture());
+                            Log.d(MyStrings.DB, "set picture from database for post"+ post);
+                        }
+                    }else {
+                        retrieveImageFromServer(post);
+                    }
+                }else {
+                    retrieveImageFromServer(post);
+                }
+
+            });
+        }).start();
     }
 
     private void retrieveImageFromServer(Post post) {

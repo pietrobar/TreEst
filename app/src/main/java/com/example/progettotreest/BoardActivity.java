@@ -65,7 +65,7 @@ public class BoardActivity extends AppCompatActivity {
 
         findViewById(R.id.switch_line_btn).setOnClickListener(v -> {
             SharedPreferences sharedPreferences = this.getSharedPreferences(MyStrings.PREFS, 0);
-            int currentDid = sharedPreferences.getInt("did",-1);
+            int currentDid = this.did;
             //invert terminus
             int newDid = line.getTerminus1().getDid()==currentDid ? line.getTerminus2().getDid() : line.getTerminus1().getDid();
             beginLabel.setText(line.getBegin(newDid));

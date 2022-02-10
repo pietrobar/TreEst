@@ -242,7 +242,8 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
             }
             if(decodedString!=null){
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                profilePic.setImageBitmap(decodedByte);
+                if(decodedByte!=null)
+                    profilePic.setImageBitmap(decodedByte);
             }
 
         }

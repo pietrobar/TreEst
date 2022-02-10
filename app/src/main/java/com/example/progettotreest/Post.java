@@ -59,4 +59,18 @@ public class Post {
     public void setFollowingAuthor(boolean b) {
         this.followingAuthor=b;
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "delay=" + delay +
+                ", status=" + status +
+                ", comment='" + comment + '\'' +
+                ", followingAuthor=" + followingAuthor +
+                ", datetime='" + datetime + '\'' +
+                ", authorName='" + authorName + '\'' +
+                ", pversion=" + pversion +
+                ", author=" + author +
+                '}';
+    }
 }

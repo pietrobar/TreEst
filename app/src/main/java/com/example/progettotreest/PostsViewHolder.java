@@ -192,11 +192,11 @@ public class PostsViewHolder extends RecyclerView.ViewHolder{
                         if (dbUser.getPversion() < post.getPversion()) {
                             //if the picVersion is less recent than the one on the server => download most recent
                             retrieveImageFromServer(post);
-                            Log.d(MyStrings.DB, "retrieve picture from internet for post"+ post);
+                            Log.d(MyStrings.DB, "retrieve picture from internet for post"+ post.toString());
                         } else if(post.getPversion()>0){
                             //if I have the most recent image I can set it
                             setBase64Pic(dbUser.getPicture());
-                            Log.d(MyStrings.DB, "set picture from database for post"+ post);
+                            Log.d(MyStrings.DB, "set picture from database for post"+ post.toString());
                         }
                     }else {
                         retrieveImageFromServer(post);

@@ -80,7 +80,10 @@ public class BoardActivity extends AppCompatActivity {
                     response -> {
                         handleRetrievePostResponse(response);
                         loadingDialog.dismissLoadingDialog();
-                    }, error->handleRetrievePostError(error));
+                    }, error->{
+                        handleRetrievePostError(error);
+                        loadingDialog.dismissLoadingDialog();
+                    });
         });
 
         findViewById(R.id.details_btn).setOnClickListener(v ->{
